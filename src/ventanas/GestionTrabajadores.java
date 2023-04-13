@@ -18,8 +18,8 @@ import modelo.Usuario;
 import utilidades.RespuestaJson;
 
 /**
- *
- * @author negu2
+ * Panel donde se gestiona los datos de los trabajadores
+ * @author Josu
  */
 public class GestionTrabajadores extends javax.swing.JPanel {
 
@@ -27,6 +27,7 @@ public class GestionTrabajadores extends javax.swing.JPanel {
     private TableRowSorter<TableModel> tablaOrdenada = new TableRowSorter<TableModel>(modeloTabla);
 
     /**
+     * Constructor del panel getion trabajadores
      * Creates new form GestionTrabajadores
      */
     public GestionTrabajadores() {
@@ -37,18 +38,26 @@ public class GestionTrabajadores extends javax.swing.JPanel {
         //tablaTrabajadores.setRowSorter(tablaOrdenada);
     }
 
+    /**
+     * Metodo que lista a los trabajadores registrados en la base de datos.
+     */
     private void listarTrabajadores() {
         int id = 0;
+        // Se limpia la tabla
         int numFilas = modeloTabla.getRowCount();
         for (int i = 0; i < numFilas; i++) {
             modeloTabla.removeRow(0);
         }
+        // Se consultan los usuarios y los trabajadores, se recorren
         ArrayList<Usuario> users = Consultas.ListarUsuarios();
         ArrayList<Trabajador> trabajadores = Consultas.ListarTrabajadores();
         for (Usuario u : users) {
+            // Se asigna a id el valor del id del usuario 
             id = u.getIdUsuario();
             for (Trabajador t : trabajadores) {
+                // Para comprobar si es trabajador
                 if (id == t.getIdTrabajador()) {
+                    // Se insertan en la tabla
                     String datos[] = {u.getNombre(), u.getApellidos(), u.getTelefono(), t.getNIF(), String.valueOf(t.getSalario()), t.getCategoria()};
                     modeloTabla.addRow(datos);
                 }
@@ -56,6 +65,9 @@ public class GestionTrabajadores extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Metodo para nombrar las columnas de la tabla
+     */
     private void llenarModeloTablaTrabajadores() {
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Apellidos");
@@ -63,6 +75,7 @@ public class GestionTrabajadores extends javax.swing.JPanel {
         modeloTabla.addColumn("NIF");
         modeloTabla.addColumn("Salario");
         modeloTabla.addColumn("Categoría");
+        // Cada vez que se pulse en una fila se rellenaran los campos correspondientes
         tablaTrabajadores.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -236,6 +249,10 @@ public class GestionTrabajadores extends javax.swing.JPanel {
         add(jPanel2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * 
+     * @param evt 
+     */
     private void btnEliminarTrabajadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrabajadorActionPerformed
         // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefonoTrabajador.getText());

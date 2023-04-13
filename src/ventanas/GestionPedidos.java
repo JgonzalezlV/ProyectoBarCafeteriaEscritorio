@@ -24,7 +24,7 @@ import modelo.Usuario;
 
 /**
  *
- * @author negu2
+ * @author Josu
  */
 public class GestionPedidos extends javax.swing.JPanel {
 

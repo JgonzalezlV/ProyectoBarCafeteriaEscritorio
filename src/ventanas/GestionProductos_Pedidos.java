@@ -20,7 +20,7 @@ import modelo.Usuario;
 
 /**
  *
- * @author negu2
+ * @author Josu
  */
 public class GestionProductos_Pedidos extends javax.swing.JPanel {
 

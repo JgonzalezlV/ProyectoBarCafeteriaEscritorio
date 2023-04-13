@@ -19,7 +19,7 @@ import utilidades.HttpRequest;
 
 /**
  *  Ventana que permite loguearse a la aplicacion
- * @author negu2
+ * @author Josu
  */
 public class VentanaLogin extends javax.swing.JFrame {
 

@@ -62,9 +62,7 @@ public class VentanaPrincipalEscritorio extends JFrame implements ActionListener
     public VentanaPrincipalEscritorio(String telefono) {
         // Se da tamaño a la ventana
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setResizable(false);
-        /*setMaximumSize(new Dimension(JFrame.MAXIMIZED_HORIZ, JFrame.MAXIMIZED_VERT));
-        setMinimumSize(new Dimension(1000, 600));*/
+        setMinimumSize(new Dimension(1300,1300));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Gestión Bar/Cafetería");
         setLocationRelativeTo(null);

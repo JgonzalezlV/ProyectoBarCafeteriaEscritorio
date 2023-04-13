@@ -21,6 +21,7 @@ import modelo.Cliente;
 import modelo.Mesa;
 import modelo.Reserva;
 import modelo.Usuario;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -39,6 +40,7 @@ public class GestionReservas extends javax.swing.JPanel {
         llenarTablaReservas();
         listarReservas();
         listarClientes();
+        jSpinnerIdReserva.setEnabled(false);
     }
 
     /**
@@ -67,6 +69,7 @@ public class GestionReservas extends javax.swing.JPanel {
         btnInsertarReserva = new javax.swing.JButton();
         btnEliminarReserva = new javax.swing.JButton();
         btnModificarReserva = new javax.swing.JButton();
+        btnNuevaReserva = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         txtNombreCliente = new javax.swing.JTextField();
         txtApellidosCliente = new javax.swing.JTextField();
@@ -128,6 +131,13 @@ public class GestionReservas extends javax.swing.JPanel {
             }
         });
 
+        btnNuevaReserva.setText("Nueva Reserva");
+        btnNuevaReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevaReservaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -135,6 +145,7 @@ public class GestionReservas extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnNuevaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnModificarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInsertarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -144,10 +155,12 @@ public class GestionReservas extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(btnNuevaReserva)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnInsertarReserva)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminarReserva)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnModificarReserva)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -195,7 +208,8 @@ public class GestionReservas extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -219,12 +233,11 @@ public class GestionReservas extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel3)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtApellidosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinnerNumMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3))
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtApellidosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSpinnerNumMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -306,7 +319,6 @@ public class GestionReservas extends javax.swing.JPanel {
             int numMesa = (int) jSpinnerNumMesa.getValue();
             if (ConsultasReservas.existeReserva(id) == null) {
                 if (ConsultasReservas.existeReserva(numMesa, Timestamp.valueOf(fechaHoraReserva)) == null) {
-                    System.out.println(Timestamp.valueOf(fechaHoraReserva));
                     if (Consultas.existeMesa("mesas", new Mesa(numMesa)) != null) {
                         ConsultasReservas.insertarReserva(id, user.getIdUsuario(), numMesa, Timestamp.valueOf(fechaHoraReserva));
                         listarReservas();
@@ -337,11 +349,25 @@ public class GestionReservas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEliminarReservaActionPerformed
 
+    private void btnNuevaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaReservaActionPerformed
+        // TODO add your handling code here:
+        limpiarTextos();
+        int ultimoIdReserva = 0;
+        ArrayList<Reserva> reservas = ConsultasReservas.listarTodosLasReservas();
+        for (Reserva reserva : reservas) {
+            ultimoIdReserva++;
+        }
+        ultimoIdReserva++;
+        jSpinnerIdReserva.setValue((int) ultimoIdReserva);
+        txtNombreCliente.requestFocus();
+    }//GEN-LAST:event_btnNuevaReservaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminarReserva;
     private javax.swing.JButton btnInsertarReserva;
     private javax.swing.JButton btnModificarReserva;
+    private javax.swing.JButton btnNuevaReserva;
     private com.github.lgooddatepicker.components.DatePicker datePickerFecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -388,13 +414,17 @@ public class GestionReservas extends javax.swing.JPanel {
         for (int i = 0; i < numFilas; i++) {
             modeloTablaReserva.removeRow(0);
         }
+        DateTime fechaSistema = DateTime.now();
+        String fecha = fechaSistema.toString().subSequence(0, 10).toString();
         ArrayList<Reserva> reservas = ConsultasReservas.listarTodosLasReservas();
         ArrayList<Usuario> usuarios = Consultas.ListarUsuarios();
         for (Reserva r : reservas) {
             for (Usuario u : usuarios) {
                 if (r.getIdCliente() == u.getIdUsuario()) {
-                    String datos[] = {String.valueOf(r.getIdReserva()), u.getNombre(), u.getApellidos(), String.valueOf(r.getNumMesa()), String.valueOf(r.getFechaHoraReserva().toString().subSequence(0, 10)), String.valueOf(r.getFechaHoraReserva().toString().substring(11, 16))};
-                    modeloTablaReserva.addRow(datos);
+                    if (String.valueOf(r.getFechaHoraReserva().toString().subSequence(0, 10)).equalsIgnoreCase(fecha)) {
+                        String datos[] = {String.valueOf(r.getIdReserva()), u.getNombre(), u.getApellidos(), String.valueOf(r.getNumMesa()), String.valueOf(r.getFechaHoraReserva().toString().subSequence(0, 10)), String.valueOf(r.getFechaHoraReserva().toString().substring(11, 16))};
+                        modeloTablaReserva.addRow(datos);
+                    }
                 }
             }
         }

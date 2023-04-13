@@ -21,7 +21,7 @@ import utilidades.RespuestaJson;
 import utilidades.ValidarDatos;
 
 /**
- *
+ * Panel donde se gestionara a los usuarios registrados en la base de datos
  * @author Josu
  */
 public class GestionUsuarios extends javax.swing.JPanel {
@@ -32,6 +32,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         
     
     /**
+     * Constructor del panel de gestion Usuarios
      * Creates new form GestionUsuarios
      */
     public GestionUsuarios() {
@@ -39,9 +40,9 @@ public class GestionUsuarios extends javax.swing.JPanel {
         llenarModeloTablaUsuarios();
         listarUsuarios();
         llenarComboBox();
+        txtTelefono.setEditable(false);
         //tablaUsuarios.setRowSorter(tablaOrdenada);
         //sportColumn = tablaUsuarios.getColumnModel().getColumn(5);
-
         //sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
         //tablaUsuarios.add(jPopupMenu1);
     }
@@ -77,6 +78,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         btnModificarUsuario = new javax.swing.JButton();
         btnEliminarUsuario = new javax.swing.JButton();
         btnInsertarUsuario = new javax.swing.JButton();
+        btnNuevoUsuario = new javax.swing.JButton();
 
         jMenuItemEliminar.setText("jMenuItem1");
         jPopupMenu1.add(jMenuItemEliminar);
@@ -205,39 +207,57 @@ public class GestionUsuarios extends javax.swing.JPanel {
             }
         });
 
+        btnNuevoUsuario.setText("Nuevo Usuario");
+        btnNuevoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminarUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnModificarUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                    .addComponent(btnInsertarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnInsertarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(btnInsertarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(btnEliminarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnInsertarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 270, 230, 172));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 252, 320, 220));
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo que tiene el boton modificar usuario
+     * @param evt 
+     */
     private void btnModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarUsuarioActionPerformed
         Usuario user = new Usuario(txtTelefono.getText());
+        // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
-            Usuario userModificado = new Usuario(txtUsuario.getText(), txtPassword.getText(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+            // Si existe se crea otro usuario con los valores modificados
+            Usuario userModificado = new Usuario(txtUsuario.getText(), txtPassword.getPassword().toString(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+            // Saltara el cuadro de confirmacion
             int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que quieres modificar el usuario?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            // Si elige si se muestra el mensaje que responde el webservice
             if (eleccion == JOptionPane.YES_OPTION) {
                 RespuestaJson respuestaJson = Consultas.actualizar("usuarios", userModificado);
                 JOptionPane.showMessageDialog(this, respuestaJson.getValue());
@@ -245,37 +265,52 @@ public class GestionUsuarios extends javax.swing.JPanel {
                 limpiarTextos();
             }
         } catch (JsonSyntaxException e) {
+            // Si no esxiste el telefono en la bd saltaria este mensaje
             JOptionPane.showMessageDialog(this,"Usuario no registrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarUsuarioActionPerformed
 
+    /**
+     * Metodo que tiene el boton eliminar usuario
+     * @param evt 
+     */
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
         // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefono.getText());
+        // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
+            // Si existe se crea otro usuario con el id que corresponde a ese telefono
             Usuario userEliminado = new Usuario(user.getIdUsuario());
+            // Pinta el cuadro de confirmacion
             int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que quieres eliminar el usuario?", "Confirmacion", JOptionPane.YES_NO_OPTION);
             if (eleccion == JOptionPane.YES_OPTION) {
                 RespuestaJson respuestaJson = Consultas.eliminar("usuarios", userEliminado);
+                // Muestra el mensaje que manda el webservice
                 JOptionPane.showMessageDialog(this, respuestaJson.getValue());
                 listarUsuarios();
                 limpiarTextos();
             }
         } catch (JsonSyntaxException e) {
+            // Si no existe el telefono manda este mensaje
             JOptionPane.showMessageDialog(this,"Usuario no registrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
 
+    /**
+     * Metodo que tiene el boton insertar usuario
+     * @param evt 
+     */
     private void btnInsertarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarUsuarioActionPerformed
         // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefono.getText());
+        // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
             JOptionPane.showMessageDialog(this,"Telefono repetido", "Usuario ya registrado", JOptionPane.INFORMATION_MESSAGE);
         } catch (JsonSyntaxException e) {
             if (ValidarDatos.validarTelefono(txtTelefono.getText())) {
-                Usuario userInsertar = new Usuario(txtUsuario.getText(), txtPassword.getText(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+                Usuario userInsertar = new Usuario(txtUsuario.getText(), txtPassword.getPassword().toString(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
                 RespuestaJson respuestaJson = Consultas.insertar("usuarios",userInsertar);
                 JOptionPane.showMessageDialog(this, respuestaJson.getValue());
                 listarUsuarios();
@@ -286,11 +321,23 @@ public class GestionUsuarios extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnInsertarUsuarioActionPerformed
 
+    /**
+     * Metodo que tiene el boton nuevo usuario
+     * @param evt 
+     */
+    private void btnNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuarioActionPerformed
+        // TODO add your handling code here:
+        limpiarTextos();
+        txtNombre.requestFocus();
+        txtTelefono.setEditable(true);
+    }//GEN-LAST:event_btnNuevoUsuarioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminarUsuario;
     private javax.swing.JButton btnInsertarUsuario;
     private javax.swing.JButton btnModificarUsuario;
+    private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JComboBox<String> comboBoxTipoUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -312,6 +359,9 @@ public class GestionUsuarios extends javax.swing.JPanel {
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Metodo para asignar los nombres a las columnas de la tabla
+     */
     private void llenarModeloTablaUsuarios() {
         modeloTablaUsuarios.addColumn("Nombre");
         modeloTablaUsuarios.addColumn("Apellidos");
@@ -319,6 +369,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         modeloTablaUsuarios.addColumn("Usuario");
         modeloTablaUsuarios.addColumn("Password");
         modeloTablaUsuarios.addColumn("Tipo usuario");
+        // Cada vez que se pulse en una fila u columna se podran en los campos los valores correspondientes
         tablaUsuarios.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -332,18 +383,29 @@ public class GestionUsuarios extends javax.swing.JPanel {
         });
     }
 
+    /**
+     * Metodo que sirve para llenar de contenido la tabla
+     */
     private void listarUsuarios() {
+        // Aqui se limpia la tabla
         int numFilas = modeloTablaUsuarios.getRowCount();
         for (int i = 0; i < numFilas; i++) {
             modeloTablaUsuarios.removeRow(0);
         }
+        // Y aqui se consulta a la base de datos
         ArrayList<Usuario> users = Consultas.ListarUsuarios();
+        // Se recorre el arraylist anteriormente creado
         for (Usuario u : users) {
+            // se van asignando los valores a un array de cadenas
             String datos[] = { u.getNombre(), u.getApellidos(), u.getTelefono(), u.getUsuario(), u.getPassword(), u.getTipoUsuario()};
+            // y se agrega a la tabla.
             modeloTablaUsuarios.addRow(datos);
         }
     }
 
+    /**
+     * Metodo que limpia todos los campos
+     */
     private void limpiarTextos() {
         txtUsuario.setText("");
         txtPassword.setText("");
@@ -353,6 +415,9 @@ public class GestionUsuarios extends javax.swing.JPanel {
         comboBoxTipoUsuario.setSelectedItem("");
     }
     
+    /**
+     * Metodo que llena el combo box
+     */
     private void llenarComboBox(){
         comboBoxTipoUsuario.addItem("");
         comboBoxTipoUsuario.addItem("cliente");

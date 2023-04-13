@@ -14,7 +14,7 @@ import modelo.Producto;
 
 /**
  *
- * @author negu2
+ * @author Josu
  */
 public class GestionProductos extends javax.swing.JPanel {
     
