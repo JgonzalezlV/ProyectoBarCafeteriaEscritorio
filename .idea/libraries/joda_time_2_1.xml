@@ -1,0 +1,28 @@
+<component name="libraryTable">
+  <library name="joda-time-2.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/joda-time-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/commons-beanutils-1.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/flatlaf-3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/jackson-databind-2.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/jackson-core-2.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/commons-digester-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/AbsoluteLayout-RELEASE170.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/commons-logging-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/commons-collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/gson-2.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/jasperreports-5.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/iText-2.1.7.js2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/flatlaf-intellij-themes-3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/LGoodDatePicker-11.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/mysql-connector-j-8.0.31.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/spring.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/LGoodDatePicker-11.2.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/src/Escritorio/librerias/LGoodDatePicker-11.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
