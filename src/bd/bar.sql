@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-03-2023 a las 11:40:56
+-- Tiempo de generación: 14-04-2023 a las 12:08:06
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -40,8 +40,7 @@ INSERT INTO `clientes` (`idCliente`, `descuento`) VALUES
 (2, 5),
 (3, 0.5),
 (6, 0),
-(12, 0.7),
-(101, 0);
+(12, 0.7);
 
 -- --------------------------------------------------------
 
@@ -121,7 +120,8 @@ INSERT INTO `productos` (`idProducto`, `nombreProducto`, `precioProducto`) VALUE
 (1, 'Menu Infantil', 13.5),
 (2, 'Entrantes', 25.64),
 (3, 'Sopa de marisco', 13.5),
-(4, 'Ensalada de gulas', 13.7);
+(4, 'Ensalada de gulas', 13.7),
+(9, 'Lasaña carne', 25);
 
 -- --------------------------------------------------------
 
@@ -143,7 +143,8 @@ CREATE TABLE `productos_pedidos` (
 INSERT INTO `productos_pedidos` (`idPP`, `idPedido`, `idProducto`, `cantidadProducto`) VALUES
 (1, 5, 3, 2),
 (2, 6, 2, 2),
-(3, 1, 3, 1);
+(3, 1, 3, 1),
+(4, 5, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -164,7 +165,11 @@ CREATE TABLE `reservas` (
 
 INSERT INTO `reservas` (`idReserva`, `idCliente`, `numMesa`, `fechaHoraReserva`) VALUES
 (1, 3, 1, '2023-03-08 15:30:00'),
-(2, 12, 1, '2023-04-14 11:00:00');
+(2, 12, 1, '2023-04-14 11:00:00'),
+(3, 2, 5, '2023-04-13 08:30:00'),
+(4, 6, 4, '2023-04-13 21:00:00'),
+(5, 2, 2, '2023-04-14 07:20:00'),
+(6, 3, 2, '2023-04-14 07:22:00');
 
 -- --------------------------------------------------------
 
@@ -186,7 +191,8 @@ CREATE TABLE `trabajadores` (
 INSERT INTO `trabajadores` (`idTrabajador`, `salario`, `NIF`, `categoria`) VALUES
 (1, 200, '25986325L', 'Administrador'),
 (5, 1080.56, '25748512K', 'Camarero'),
-(11, 300.55, '25784132L', 'Cocinero');
+(11, 303.55, '25784132L', 'Cocinero'),
+(110, 174.856, '58963214O', 'Administrador');
 
 -- --------------------------------------------------------
 
@@ -209,14 +215,14 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`idUsuario`, `usuario`, `password`, `nombre`, `apellidos`, `telefono`, `tipoUsuario`) VALUES
-(1, 'admin', 'admin', 'Administrador', '', '965841223', 'trabajador'),
-(2, 'love64', '123456', 'Amor', 'Fernandez Garcia', '652000111', 'cliente'),
-(3, 'josu12', '14022003', 'Josu', 'Gonzalez Lopez', '651584102', 'cliente'),
-(5, 'ruli58', '1234', 'Roberto', 'Lituania Marruecos', '412586985', 'trabajador'),
-(6, 'jUjunctr', '04122018', 'Julieta', 'Aguilar López', '258693147', 'cliente'),
-(11, 'cocinero1', 'cocinero1', 'Cocinero', '', '145278963', 'trabajador'),
-(12, 'leo34', '123456789', 'Leo', 'Hola Prueba', '158963258', 'cliente'),
-(101, 'hoad', '1245', 'Hola', 'Adios', '874152698', 'cliente');
+(1, 'admin', '9jq3P9HuHIZhWYdRQPNt', 'Administrador', '', '965841223', 'trabajador'),
+(2, 'love64', '8www3xeaFWag9PEAy2CI', 'Amor', 'Fernandez Garcia', '652000111', 'cliente'),
+(3, 'josu12', 'umGl6fjhkc30I1ShPBkN', 'Josu', 'Gonzalez Lopez', '651584102', 'cliente'),
+(5, 'ruli58', 'nm1AzYbtbbiO7Ot/TBXZ', 'Roberto', 'Lituania Marruecos', '412586985', 'trabajador'),
+(6, 'jUjunctr', 'tqrZFy7w9VV1Ng1jAXnv', 'Julieta', 'Aguilar López', '258693147', 'cliente'),
+(11, 'cocinero1', 'DTbJ2Xu2IHCBAhbKAaiP', 'Cocinero', '', '145278963', 'trabajador'),
+(12, 'leo34', 'C5G10nSsHGn4a 7YVaZB', 'Leo', 'Hola Prueba', '158963258', 'cliente'),
+(110, 'qwerty', 'EMveIGJeOGu5deu0e3Rh', 'afdafg', 'dsgd', '478569321', 'trabajador');
 
 --
 -- Disparadores `usuarios`
@@ -298,7 +304,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `mesas`
 --
 ALTER TABLE `mesas`
-  MODIFY `numMesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `numMesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
@@ -310,7 +316,7 @@ ALTER TABLE `pedidos`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_pedidos`
@@ -328,7 +334,7 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- Restricciones para tablas volcadas
