@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Producto;
+import utilidades.SpinnerDecimal;
 
 /**
  *
@@ -36,7 +37,7 @@ public class GestionProductos extends javax.swing.JPanel {
             @Override
             public void mousePressed(MouseEvent evt) {
                 txtNombreProducto.setText(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 0).toString());
-                txtPrecioProducto.setText(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString());
+                jSpinnerPrecioProducto.setValue(Double.parseDouble(tablaProductos.getValueAt(tablaProductos.getSelectedRow(), 1).toString()));
             }
         });
     }
@@ -61,7 +62,7 @@ public class GestionProductos extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtNombreProducto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtPrecioProducto = new javax.swing.JTextField();
+        jSpinnerPrecioProducto = new SpinnerDecimal();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -150,13 +151,13 @@ public class GestionProductos extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSpinnerPrecioProducto, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,9 +167,9 @@ public class GestionProductos extends javax.swing.JPanel {
                 .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(67, 67, 67)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(txtPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSpinnerPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -184,7 +185,7 @@ public class GestionProductos extends javax.swing.JPanel {
     private void btnInsertarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarProductoActionPerformed
         // TODO add your handling code here:
         if (ConsultasProductos.existeProducto(txtNombreProducto.getText()) == null) {
-            ConsultasProductos.insertarProductos(txtNombreProducto.getText(), Double.parseDouble(txtPrecioProducto.getText()));
+            ConsultasProductos.insertarProductos(txtNombreProducto.getText(),(double) jSpinnerPrecioProducto.getValue());
             listarProductos();
             limpiarTextos();
         }else{
@@ -206,7 +207,7 @@ public class GestionProductos extends javax.swing.JPanel {
     private void btnModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProductoActionPerformed
         // TODO add your handling code here:
         if (ConsultasProductos.existeProducto(txtNombreProducto.getText()) != null) {
-            ConsultasProductos.modificarProducto(txtNombreProducto.getText(), Double.parseDouble(txtPrecioProducto.getText()));
+            ConsultasProductos.modificarProducto(txtNombreProducto.getText(), (double) jSpinnerPrecioProducto.getValue());
             listarProductos();
             limpiarTextos();
         }else{
@@ -224,9 +225,9 @@ public class GestionProductos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinnerPrecioProducto;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTextField txtNombreProducto;
-    private javax.swing.JTextField txtPrecioProducto;
     // End of variables declaration//GEN-END:variables
 
     private void listarProductos() {
@@ -243,6 +244,6 @@ public class GestionProductos extends javax.swing.JPanel {
     
     private void limpiarTextos() {
         txtNombreProducto.setText("");
-        txtPrecioProducto.setText("");
+        jSpinnerPrecioProducto.setValue((double) 0.0);
     }
 }

@@ -16,9 +16,12 @@ import javax.swing.table.TableRowSorter;
 import modelo.Trabajador;
 import modelo.Usuario;
 import utilidades.RespuestaJson;
+import utilidades.SpinnerDecimal;
+import utilidades.ValidarDatos;
 
 /**
  * Panel donde se gestiona los datos de los trabajadores
+ *
  * @author Josu
  */
 public class GestionTrabajadores extends javax.swing.JPanel {
@@ -27,14 +30,15 @@ public class GestionTrabajadores extends javax.swing.JPanel {
     private TableRowSorter<TableModel> tablaOrdenada = new TableRowSorter<TableModel>(modeloTabla);
 
     /**
-     * Constructor del panel getion trabajadores
-     * Creates new form GestionTrabajadores
+     * Constructor del panel gestion trabajadores Creates new form
+     * GestionTrabajadores
      */
     public GestionTrabajadores() {
         initComponents();
         llenarModeloTablaTrabajadores();
         listarTrabajadores();
         llenarComboBoxCategoria();
+        txtTelefonoTrabajador.setEnabled(false);
         //tablaTrabajadores.setRowSorter(tablaOrdenada);
     }
 
@@ -79,9 +83,11 @@ public class GestionTrabajadores extends javax.swing.JPanel {
         tablaTrabajadores.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
+                // Se controla el puntero nulo por que al insertar el usuario tambien se inserta 
+                // el trabajador por lo que el NIF es null
                 try {
                     txtTelefonoTrabajador.setText(tablaTrabajadores.getValueAt(tablaTrabajadores.getSelectedRow(), 2).toString());
-                    txtSalario.setText(tablaTrabajadores.getValueAt(tablaTrabajadores.getSelectedRow(), 4).toString());
+                    jSpinnerSalario.setValue(Double.parseDouble(tablaTrabajadores.getValueAt(tablaTrabajadores.getSelectedRow(), 4).toString()));
                     comboBoxCategoria.setSelectedItem(tablaTrabajadores.getValueAt(tablaTrabajadores.getSelectedRow(), 5).toString());
                     txtNIF.setText(tablaTrabajadores.getValueAt(tablaTrabajadores.getSelectedRow(), 3).toString());
                 } catch (NullPointerException e) {
@@ -112,9 +118,9 @@ public class GestionTrabajadores extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtTelefonoTrabajador = new javax.swing.JTextField();
-        txtSalario = new javax.swing.JTextField();
         txtNIF = new javax.swing.JTextField();
         comboBoxCategoria = new javax.swing.JComboBox<>();
+        jSpinnerSalario = new SpinnerDecimal();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -212,11 +218,11 @@ public class GestionTrabajadores extends javax.swing.JPanel {
                     .addComponent(txtNIF, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
-                    .addComponent(txtSalario, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
                     .addComponent(txtTelefonoTrabajador, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
                     .addComponent(jLabel3)
-                    .addComponent(comboBoxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(comboBoxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSpinnerSalario))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,7 +234,7 @@ public class GestionTrabajadores extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGap(11, 11, 11)
-                .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSpinnerSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -250,52 +256,85 @@ public class GestionTrabajadores extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * 
-     * @param evt 
+     * Metodo que elimina un trabajador
+     *
+     * @param evt
      */
     private void btnEliminarTrabajadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrabajadorActionPerformed
-        // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefonoTrabajador.getText());
+        // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
             Trabajador trabajador = new Trabajador(user.getIdUsuario());
+            // Ahora se comprueba si existe el trabajador
             try {
                 trabajador = Consultas.existeTrabajador(trabajador);
+                int eleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro de que quieres eliminar al trabajador?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+                // Si existe se crea uno con el id del trabajador a eliminar
                 Trabajador trabajadorEliminar = new Trabajador(user.getIdUsuario());
-                RespuestaJson respuestaJson = Consultas.eliminar("trabajadores",trabajadorEliminar);
-                JOptionPane.showMessageDialog(this, respuestaJson.getValue());
-                listarTrabajadores();
-                limpiarTextos();
+                if (eleccion == JOptionPane.YES_OPTION) {
+                    RespuestaJson respuestaJson = Consultas.eliminar("trabajadores", trabajadorEliminar);
+                    // El webservice te manda un mensaje con el resultado de la operacion
+                    JOptionPane.showMessageDialog(this, respuestaJson.getValue());
+                    listarTrabajadores();
+                    limpiarTextos();
+                }
             } catch (JsonSyntaxException e) {
-                JOptionPane.showMessageDialog(this,"Trabajador no registrado", "No registrado", JOptionPane.ERROR_MESSAGE);
+                // Esto saltaria cuando ese id de usuario no es trabajador o no esta registrado
+                JOptionPane.showMessageDialog(this, "Trabajador no registrado", "No registrado", JOptionPane.ERROR_MESSAGE);
             }
         } catch (JsonSyntaxException e) {
-            JOptionPane.showMessageDialog(this,"Usuario no registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Aqui se llegaria cuando el usuario no esta registrado en la base de datos
+            JOptionPane.showMessageDialog(this, "Usuario no registrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarTrabajadorActionPerformed
 
+    /**
+     * Metodo que modifica un trabajador
+     *
+     * @param evt
+     */
     private void btnModificarTrabajadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTrabajadorActionPerformed
-        // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefonoTrabajador.getText());
+        // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
             Trabajador trabajador = new Trabajador(user.getIdUsuario());
+            // Ahora se comprueba si existe el trabajador
             try {
                 trabajador = Consultas.existeTrabajador(trabajador);
-                Trabajador trabajadorModificar = new Trabajador(user.getIdUsuario(), Double.valueOf(txtSalario.getText()),txtNIF.getText(),String.valueOf(comboBoxCategoria.getSelectedItem()));
-                RespuestaJson respuestaJson = Consultas.actualizar("trabajadores",trabajadorModificar);
-                JOptionPane.showMessageDialog(this, respuestaJson.getValue());
-                listarTrabajadores();
-                limpiarTextos();
+                if (ValidarDatos.validarNif(txtNIF.getText())) {
+                    // Se valida el NIF y si es valido
+                    // Si existe se crea uno con los datos del trabajador a modificar
+                    Trabajador trabajadorModificar = new Trabajador(user.getIdUsuario(), (double) jSpinnerSalario.getValue(), txtNIF.getText(), String.valueOf(comboBoxCategoria.getSelectedItem()));
+                    int eleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro de que quieres modificar al trabajador?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+                    if (eleccion == JOptionPane.YES_OPTION) {
+                        RespuestaJson respuestaJson = Consultas.actualizar("trabajadores", trabajadorModificar);
+                        // El webservice te manda un mensaje con el resultado de la operacion
+                        JOptionPane.showMessageDialog(this, respuestaJson.getValue());
+                        listarTrabajadores();
+                        limpiarTextos();
+                    }
+                } else {
+                    // Si el NIF no es valido saltaria el siguiente mensaje
+                    JOptionPane.showMessageDialog(this, "Formato de NIF no valido", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } catch (JsonSyntaxException e) {
-                System.out.println(e.getMessage());
-                //JOptionPane.showMessageDialog(this,"Trabajador no registrado", "No registrado", JOptionPane.ERROR_MESSAGE);
+                // Esto saltaria cuando ese id de usuario no es trabajador o no esta registrado
+                JOptionPane.showMessageDialog(this, "Trabajador no registrado", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (JsonSyntaxException e) {
-            JOptionPane.showMessageDialog(this,"Usuario no registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Aqui se llegaria cuando el usuario no esta registrado en la base de datos
+            JOptionPane.showMessageDialog(this, "Usuario no registrado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarTrabajadorActionPerformed
 
+    /**
+     * Metodo que actualiza la tabla si has insertado un usuario y en esta
+     * pestaña no se ve reflejado
+     *
+     * @param evt
+     */
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         listarTrabajadores();
@@ -314,19 +353,25 @@ public class GestionTrabajadores extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinnerSalario;
     private javax.swing.JTable tablaTrabajadores;
     private javax.swing.JTextField txtNIF;
-    private javax.swing.JTextField txtSalario;
     private javax.swing.JTextField txtTelefonoTrabajador;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Metodo que limpia los textos de los campos
+     */
     private void limpiarTextos() {
         txtTelefonoTrabajador.setText("");
-        txtSalario.setText("");
+        jSpinnerSalario.setValue((double) 0.0);
         txtNIF.setText("");
         comboBoxCategoria.setSelectedItem("");
     }
 
+    /**
+     * Metodo que inserta las categorias necesarias al combo box
+     */
     private void llenarComboBoxCategoria() {
         comboBoxCategoria.addItem("");
         comboBoxCategoria.addItem("Camarero");

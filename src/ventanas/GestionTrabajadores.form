@@ -149,12 +149,12 @@
                       <Component id="txtNIF" pref="112" max="32767" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtSalario" pref="112" max="32767" attributes="0"/>
                       <Component id="txtTelefonoTrabajador" alignment="0" pref="112" max="32767" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <Component id="comboBoxCategoria" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jSpinnerSalario" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="34" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -168,7 +168,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  <Component id="txtSalario" min="-2" max="-2" attributes="0"/>
+                  <Component id="jSpinnerSalario" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -205,8 +205,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtTelefonoTrabajador">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSalario">
-        </Component>
         <Component class="javax.swing.JTextField" name="txtNIF">
         </Component>
         <Component class="javax.swing.JComboBox" name="comboBoxCategoria">
@@ -217,6 +215,11 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JSpinner" name="jSpinnerSalario">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new SpinnerDecimal()"/>
           </AuxValues>
         </Component>
       </SubComponents>

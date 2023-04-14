@@ -32,6 +32,9 @@ public class GestionClientes extends javax.swing.JPanel {
         initComponents();
         llenarModeloTablaClientes();
         listarClientes();
+        txtNombreCliente.setEnabled(false);
+        txtApellidosClientes.setEnabled(false);
+        txtTelefonoClientes.setEnabled(false);
     }
 
     private void listarClientes() {

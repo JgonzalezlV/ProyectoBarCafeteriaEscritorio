@@ -19,7 +19,7 @@ import modelo.Productos_Pedidos;
 import modelo.Usuario;
 
 /**
- *
+ *Panel donde se inserta productos en pedidos
  * @author Josu
  */
 public class GestionProductos_Pedidos extends javax.swing.JPanel {
@@ -29,6 +29,7 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
     private DefaultTableModel modeloTablaPedidos = new DefaultTableModel();
     
     /**
+     * Constructor del panel gestion productos_pedidos
      * Creates new form GestionProductos_Pedidos
      */
     public GestionProductos_Pedidos() {
@@ -37,6 +38,7 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         listarProductos_Pedidos();
         llenarTablaProductos();
         llenarTablaPedidos();
+        txtId.setEnabled(false);
     }
 
     /**
@@ -57,13 +59,14 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        txtIdPedido = new javax.swing.JTextField();
         txtNombreProducto = new javax.swing.JTextField();
-        txtCantidadProducto = new javax.swing.JTextField();
+        jSpinnerIdPedido = new javax.swing.JSpinner();
+        jSpinnerCantidadProducto = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         btnInsertar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -112,10 +115,10 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
                         .addComponent(jLabel3)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addComponent(txtIdPedido)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSpinnerCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -127,16 +130,16 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
+                .addComponent(jSpinnerIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSpinnerCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -171,28 +174,44 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             }
         });
 
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(btnInsertar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEliminar)
-                .addGap(52, 52, 52)
-                .addComponent(btnModificar)
-                .addGap(58, 58, 58))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                        .addComponent(btnEliminar)
+                        .addGap(66, 66, 66))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(btnInsertar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnModificar)
+                    .addComponent(btnNuevo)
                     .addComponent(btnInsertar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -262,18 +281,26 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         add(jScrollPane3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo donde se inserta los productos en pedidos ya existentes
+     * @param evt 
+     */
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        // TODO add your handling code here:
         int id = Integer.parseInt(txtId.getText());
-        int idPedido = Integer.parseInt(txtIdPedido.getText());
+        int idPedido = (int) jSpinnerIdPedido.getValue();
         Producto producto = ConsultasProductos.existeProducto(txtNombreProducto.getText());
+        // Ahora comprobamos si el id existe
         if (ConsultasProductos_Pedidos.existeProducto(id) == null) {
+            // Miramos si existe el pedido
             if (ConsultasPedidos.existePedido(idPedido) != null) {
+                // Comprobamos si existe el producto
                 if (producto!= null) {
-                    ConsultasProductos_Pedidos.insertarProductos_Pedidos(id, idPedido, producto.getIdProducto(), Integer.parseInt(txtCantidadProducto.getText()));
+                    // Se inserta los productos en los pedidos
+                    ConsultasProductos_Pedidos.insertarProductos_Pedidos(id, idPedido, producto.getIdProducto(), (int) jSpinnerCantidadProducto.getValue());
                     listarProductos_Pedidos();
                     limpiarTextos();
                 }else{
+                    // Si el producto no existe
                     JOptionPane.showMessageDialog(null, "Producto no existe");
                 }
             }else{
@@ -299,12 +326,12 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         int id = Integer.parseInt(txtId.getText());
-        int idPedido = Integer.parseInt(txtIdPedido.getText());
+        int idPedido = (int) jSpinnerIdPedido.getValue();
         Producto producto = ConsultasProductos.existeProducto(txtNombreProducto.getText());
         if (ConsultasProductos_Pedidos.existeProducto(id) != null) {
             if (ConsultasPedidos.existePedido(idPedido) != null) {
                 if (producto != null) {
-                    ConsultasProductos_Pedidos.modificarProducto_Pedidos(id, idPedido, producto.getIdProducto(),Integer.parseInt(txtCantidadProducto.getText()));
+                    ConsultasProductos_Pedidos.modificarProducto_Pedidos(id, idPedido, producto.getIdProducto(),(int) jSpinnerCantidadProducto.getValue());
                     listarProductos_Pedidos();
                     limpiarTextos();
                 }else{
@@ -318,11 +345,25 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        limpiarTextos();
+        // Creamos una variable para hacer el id automatico
+        int ultimoIdPP = 0;
+        // Listamos todos
+        ArrayList<Productos_Pedidos> productos_pedidos = Consultas.ListarProductos_Pedidos();
+        for (Productos_Pedidos productos_pedido : productos_pedidos) {
+            ultimoIdPP = productos_pedido.getIdPP();
+        }
+        ultimoIdPP++;
+        txtId.setText(String.valueOf(ultimoIdPP));
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -334,12 +375,12 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSpinner jSpinnerCantidadProducto;
+    private javax.swing.JSpinner jSpinnerIdPedido;
     private javax.swing.JTable tablaPedidos;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTable tablaProductos_Pedidos;
-    private javax.swing.JTextField txtCantidadProducto;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtIdPedido;
     private javax.swing.JTextField txtNombreProducto;
     // End of variables declaration//GEN-END:variables
 
@@ -352,9 +393,9 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             @Override
             public void mousePressed(MouseEvent evt) {
                 txtId.setText(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 0).toString());
-                txtIdPedido.setText(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 1).toString());
+                jSpinnerIdPedido.setValue(Integer.parseInt(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 1).toString()));
                 txtNombreProducto.setText(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 2).toString());
-                txtCantidadProducto.setText(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 3).toString());
+                jSpinnerCantidadProducto.setValue(Integer.parseInt(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 3).toString()));
             }
         });
     }
@@ -374,9 +415,9 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
     
     private void limpiarTextos(){
         txtId.setText("");
-        txtIdPedido.setText("");
+        jSpinnerIdPedido.setValue((int) 0);
         txtNombreProducto.setText("");
-        txtCantidadProducto.setText("");
+        jSpinnerCantidadProducto.setValue((int) 0);
     }
 
     private void llenarTablaProductos() {

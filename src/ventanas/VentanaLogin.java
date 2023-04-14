@@ -9,13 +9,26 @@ import com.google.gson.JsonSyntaxException;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 import utilidades.Constantes;
 import utilidades.Decodificaciones;
 import utilidades.HttpRequest;
+import ventanas.VentanaPrincipalEscritorio;
 
 /**
  *  Ventana que permite loguearse a la aplicacion
@@ -23,6 +36,8 @@ import utilidades.HttpRequest;
  */
 public class VentanaLogin extends javax.swing.JFrame {
 
+    private final String claveEncriptacion = "secreto!";
+    
     /**
      * Constructor de VentanaLogin
      */
@@ -226,7 +241,7 @@ public class VentanaLogin extends javax.swing.JFrame {
             // se pasa a la password y si esto no esta vacio
             if (!password.isEmpty()) {
                 // llamamos al siguiente metodo
-                login(usuario, password);
+                login(usuario, encriptar(password, claveEncriptacion).substring(0, 20));
             } else {
                 // Si la password esta en blanco saltara el siguiente JOptionPane
                 JOptionPane.showMessageDialog(this, "Campo de la password no relleno.", "Password", JOptionPane.ERROR_MESSAGE);
@@ -292,6 +307,7 @@ public class VentanaLogin extends javax.swing.JFrame {
     * @param password --> Es el texto que contiene el campo password.
     */    
     private void login(String usuario, String password) {
+        System.out.println(password);
         // Creamos un usuario con los dos parametros necesarios
         Usuario user = new Usuario(usuario, password);
         Gson gson = new Gson();
@@ -321,6 +337,72 @@ public class VentanaLogin extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Crea la clave de encriptacion usada internamente
+     * @param clave Clave que se usara para encriptar
+     * @return Clave de encriptacion
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
+    private SecretKeySpec crearClave(String clave){
+        SecretKeySpec secretKey = null;
+        try {
+            byte[] claveEncriptacion = clave.getBytes("UTF-8");
+            
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            
+            claveEncriptacion = sha.digest(claveEncriptacion);
+            claveEncriptacion = Arrays.copyOf(claveEncriptacion, 16);
+            
+            secretKey = new SecretKeySpec(claveEncriptacion, "AES");
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return secretKey;
+    }
+
+    /**
+     * Aplica la encriptacion AES a la cadena de texto usando la clave indicada
+     * @param datos Cadena a encriptar
+     * @param claveSecreta Clave para encriptar
+     * @return Información encriptada
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     * @throws NoSuchPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException 
+     */
+    public String encriptar(String datos, String claveSecreta) {
+        String encriptado = "";
+        try {
+            SecretKeySpec secretKey = crearClave(claveSecreta);
+            
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            
+            byte[] datosEncriptar = datos.getBytes("UTF-8");
+            byte[] bytesEncriptados = cipher.doFinal(datosEncriptar);
+            encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return encriptado;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel etiquetaLogin;

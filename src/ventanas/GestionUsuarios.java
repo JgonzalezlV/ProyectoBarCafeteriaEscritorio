@@ -6,12 +6,23 @@ package ventanas;
 
 import com.google.gson.JsonSyntaxException;
 import controlador.Consultas;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -29,6 +40,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
     private DefaultTableModel modeloTablaUsuarios = new DefaultTableModel();
     private TableRowSorter<TableModel> tablaOrdenada = new TableRowSorter<TableModel>(modeloTablaUsuarios);
     private TableColumn sportColumn;
+    private final String claveEncriptacion = "secreto!";
         
     
     /**
@@ -44,7 +56,6 @@ public class GestionUsuarios extends javax.swing.JPanel {
         //tablaUsuarios.setRowSorter(tablaOrdenada);
         //sportColumn = tablaUsuarios.getColumnModel().getColumn(5);
         //sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
-        //tablaUsuarios.add(jPopupMenu1);
     }
     
     /**
@@ -245,16 +256,18 @@ public class GestionUsuarios extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Metodo que tiene el boton modificar usuario
+     * Metodo que modifica un usuario
      * @param evt 
      */
     private void btnModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarUsuarioActionPerformed
         Usuario user = new Usuario(txtTelefono.getText());
+        char[] Arraypassword = txtPassword.getPassword();
+        String password = String.valueOf(Arraypassword);
         // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
             // Si existe se crea otro usuario con los valores modificados
-            Usuario userModificado = new Usuario(txtUsuario.getText(), txtPassword.getPassword().toString(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+            Usuario userModificado = new Usuario(txtUsuario.getText(), encriptar(password, claveEncriptacion), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
             // Saltara el cuadro de confirmacion
             int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que quieres modificar el usuario?", "Confirmacion", JOptionPane.YES_NO_OPTION);
             // Si elige si se muestra el mensaje que responde el webservice
@@ -271,11 +284,10 @@ public class GestionUsuarios extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarUsuarioActionPerformed
 
     /**
-     * Metodo que tiene el boton eliminar usuario
+     * Metodo que elimina un usuario
      * @param evt 
      */
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
-        // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefono.getText());
         // Se comprueba si existe el telefono
         try {
@@ -298,35 +310,41 @@ public class GestionUsuarios extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
 
     /**
-     * Metodo que tiene el boton insertar usuario
+     * Metodo que inserta un usuario
      * @param evt 
      */
     private void btnInsertarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarUsuarioActionPerformed
-        // TODO add your handling code here:
         Usuario user = new Usuario(txtTelefono.getText());
+        char[] pass = txtPassword.getPassword();
+        String password = String.valueOf(pass);
         // Se comprueba si existe el telefono
         try {
             user = Consultas.existeUsuario("usuarios", user);
+            // Si existe se mostraria el siguiente mensaje
             JOptionPane.showMessageDialog(this,"Telefono repetido", "Usuario ya registrado", JOptionPane.INFORMATION_MESSAGE);
         } catch (JsonSyntaxException e) {
+            // Si no existe primero se comprueba la longitud del tele
             if (ValidarDatos.validarTelefono(txtTelefono.getText())) {
-                Usuario userInsertar = new Usuario(txtUsuario.getText(), txtPassword.getPassword().toString(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+                // Si no existe se crea un usuario con los datos correspondientes
+                Usuario userInsertar = new Usuario(txtUsuario.getText(), encriptar(password, claveEncriptacion), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
                 RespuestaJson respuestaJson = Consultas.insertar("usuarios",userInsertar);
+                // Y se mostraria el mensaje 
                 JOptionPane.showMessageDialog(this, respuestaJson.getValue());
                 listarUsuarios();
                 limpiarTextos();
             }else{
+                // Si el telefono no es valido saltaria el siguiente mensaje
                 JOptionPane.showMessageDialog(this,"Formato de telefono no valido", "Error", JOptionPane.ERROR_MESSAGE);
             } 
         }
     }//GEN-LAST:event_btnInsertarUsuarioActionPerformed
 
     /**
-     * Metodo que tiene el boton nuevo usuario
+     * Metodo que permite escribir un nuevo usuario
      * @param evt 
      */
     private void btnNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuarioActionPerformed
-        // TODO add your handling code here:
+        // Limpia los textos y lleva el foco al texto del nombre para insertar un nuevo usuario
         limpiarTextos();
         txtNombre.requestFocus();
         txtTelefono.setEditable(true);
@@ -422,5 +440,72 @@ public class GestionUsuarios extends javax.swing.JPanel {
         comboBoxTipoUsuario.addItem("");
         comboBoxTipoUsuario.addItem("cliente");
         comboBoxTipoUsuario.addItem("trabajador");
+    }
+    
+    /**
+     * Crea la clave de encriptacion usada internamente
+     * @param clave Clave que se usara para encriptar
+     * @return Clave de encriptacion
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
+    private SecretKeySpec crearClave(String clave){
+        SecretKeySpec secretKey = null;
+        try {
+            byte[] claveEncriptacion = clave.getBytes("UTF-8");
+            
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            
+            claveEncriptacion = sha.digest(claveEncriptacion);
+            claveEncriptacion = Arrays.copyOf(claveEncriptacion, 16);
+            
+            secretKey = new SecretKeySpec(claveEncriptacion, "AES");
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return secretKey;
+    }
+
+    /**
+     * Aplica la encriptacion AES a la cadena de texto usando la clave indicada
+     * @param datos Cadena a encriptar
+     * @param claveSecreta Clave para encriptar
+     * @return Información encriptada
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     * @throws NoSuchPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException 
+     */
+    public String encriptar(String datos, String claveSecreta) {
+        String encriptado = "";
+        try {
+            SecretKeySpec secretKey = crearClave(claveSecreta);
+            
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            
+            byte[] datosEncriptar = datos.getBytes("UTF-8");
+            byte[] bytesEncriptados = cipher.doFinal(datosEncriptar);
+            encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return encriptado;
     }
 }

@@ -24,6 +24,7 @@ import modelo.Usuario;
 import org.joda.time.DateTime;
 
 /**
+ * Panel donde se gestiona los datos de las reservas
  *
  * @author Josu
  */
@@ -33,6 +34,7 @@ public class GestionReservas extends javax.swing.JPanel {
     private DefaultTableModel modeloTablaClientes = new DefaultTableModel();
 
     /**
+     * Constructor del panel de gestion reservas 
      * Creates new form GestionReservas
      */
     public GestionReservas() {
@@ -175,7 +177,7 @@ public class GestionReservas extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jSpinnerIdReserva, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                        .addComponent(jSpinnerIdReserva)
                         .addGap(103, 103, 103)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -238,7 +240,7 @@ public class GestionReservas extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtApellidosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSpinnerNumMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -278,48 +280,83 @@ public class GestionReservas extends javax.swing.JPanel {
         add(jScrollPane2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo que modifica una reserva
+     *
+     * @param evt
+     */
     private void btnModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarReservaActionPerformed
         // TODO add your handling code here:
         int id = (int) jSpinnerIdReserva.getValue();
         try {
             Usuario user = Consultas.existeUsuario(new Usuario(txtNombreCliente.getText(), txtApellidosCliente.getText(), ""));
+            // Conseguimos los datos completos del cliente mediante el nombre y los apellidos
             int numMesa = (int) jSpinnerNumMesa.getValue();
             String fechaReserva = Date.valueOf(datePickerFecha.getDate()).toString();
             String horaReserva = Time.valueOf(timePickerHora.getTime()).toString();
             String fechaHoraReserva = fechaReserva.concat(" " + horaReserva);
+            // Conseguimos la fecha junto a la hora
             if (ConsultasReservas.existeReserva(id) != null) {
+                // Se comprueba si existe ese id de reserva
                 try {
+                    // Si existe se comprobara el cliente
                     Consultas.existeCliente("clientes", new Cliente(user.getIdUsuario()));
+                    // Se comprueba tambien si existe la mesa
                     if (Consultas.existeMesa("mesas", new Mesa(numMesa)) != null) {
-                        ConsultasReservas.modificarReserva(id, user.getIdUsuario(), numMesa, Timestamp.valueOf(fechaHoraReserva));
-                        listarReservas();
-                        limpiarTextos();
+                        // Tambien comprobamos si esa mesa esta reservada ya a ese dia y hora
+                        if (ConsultasReservas.existeReserva(numMesa, Timestamp.valueOf(fechaHoraReserva)) == null) {
+                            // Si no esta reservada en esa fecha/hora se modifica
+                            int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que quieres modificar la reserva?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+                            if (eleccion == JOptionPane.YES_OPTION) {
+                                ConsultasReservas.modificarReserva(id, user.getIdUsuario(), numMesa, Timestamp.valueOf(fechaHoraReserva));
+                                listarReservas();
+                                limpiarTextos();
+                            }
+                        } else {
+                            // Si no saldra este mensaje
+                            JOptionPane.showMessageDialog(null, "Mesa ya reservada a esa fecha y hora");
+                        }
                     } else {
+                        // Si no saldra este mensaje
                         JOptionPane.showMessageDialog(null, "Mesa no registrada");
                     }
                 } catch (JsonSyntaxException e) {
+                    // Si no saldra este mensaje
                     JOptionPane.showMessageDialog(null, "Cliente no registrado");
                 }
             } else {
+                // Si no saldra este mensaje
                 JOptionPane.showMessageDialog(null, "Reserva no registrada");
             }
         } catch (JsonSyntaxException e) {
+            // Si no saldra este mensaje
             JOptionPane.showMessageDialog(null, "Usuario no registrado");
         }
     }//GEN-LAST:event_btnModificarReservaActionPerformed
 
+    /**
+     * Metodo que inserta una reserva
+     *
+     * @param evt
+     */
     private void btnInsertarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarReservaActionPerformed
         // TODO add your handling code here:
         int id = (int) jSpinnerIdReserva.getValue();
         String fechaReserva = Date.valueOf(datePickerFecha.getDate()).toString();
         String horaReserva = Time.valueOf(timePickerHora.getTime()).toString();
         String fechaHoraReserva = fechaReserva.concat(" " + horaReserva);
+        // Conseguimos la fecha junto a la hora
         try {
             Usuario user = Consultas.existeUsuario(new Usuario(txtNombreCliente.getText(), txtApellidosCliente.getText(), ""));
+            // Conseguimos los datos completos del cliente mediante el nombre y los apellidos
             int numMesa = (int) jSpinnerNumMesa.getValue();
+            // Se comprueba si existe ese id de reserva
             if (ConsultasReservas.existeReserva(id) == null) {
+                // Tambien comprobamos si esa mesa esta reservada ya a ese dia y hora
                 if (ConsultasReservas.existeReserva(numMesa, Timestamp.valueOf(fechaHoraReserva)) == null) {
+                    // Se comprueba tambien si existe la mesa
                     if (Consultas.existeMesa("mesas", new Mesa(numMesa)) != null) {
+                        // Si entra en todos los if se insertara la reserva
                         ConsultasReservas.insertarReserva(id, user.getIdUsuario(), numMesa, Timestamp.valueOf(fechaHoraReserva));
                         listarReservas();
                         limpiarTextos();
@@ -327,7 +364,7 @@ public class GestionReservas extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(null, "Mesa no registrada");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Mesa ya reservada a esa fecha u hora");
+                    JOptionPane.showMessageDialog(null, "Mesa ya reservada a esa fecha y hora");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Reserva ya registrada");
@@ -337,27 +374,46 @@ public class GestionReservas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnInsertarReservaActionPerformed
 
+    /**
+     * Metodo que elimina una reserva
+     *
+     * @param evt
+     */
     private void btnEliminarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarReservaActionPerformed
         // TODO add your handling code here:
         int id = (int) jSpinnerIdReserva.getValue();
+        // Obtenemos el id de la reserva que se quiere suprimir
         if (ConsultasReservas.existeReserva(id) != null) {
-            ConsultasReservas.eliminarReserva(id);
-            listarReservas();
-            limpiarTextos();
+            // Si existe se elimina
+            int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que quieres eliminar la reserva?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (eleccion == JOptionPane.YES_OPTION) {
+                ConsultasReservas.eliminarReserva(id);
+                listarReservas();
+                limpiarTextos();    
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Reserva no registrada");
         }
     }//GEN-LAST:event_btnEliminarReservaActionPerformed
 
+    /**
+     * Metodo que permite escribir una nueva reserva
+     *
+     * @param evt
+     */
     private void btnNuevaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaReservaActionPerformed
-        // TODO add your handling code here:
         limpiarTextos();
+        // Creamos una variable para hacer el id de la reserva automatico
         int ultimoIdReserva = 0;
+        // Listamos todas las reservas 
         ArrayList<Reserva> reservas = ConsultasReservas.listarTodosLasReservas();
         for (Reserva reserva : reservas) {
-            ultimoIdReserva++;
+            // Por cada reserva la varible va incrementandose
+            ultimoIdReserva = reserva.getIdReserva();
         }
+        // Y para tener el siguiente id de reserva 
         ultimoIdReserva++;
+        // Y le damos el valor al spinner
         jSpinnerIdReserva.setValue((int) ultimoIdReserva);
         txtNombreCliente.requestFocus();
     }//GEN-LAST:event_btnNuevaReservaActionPerformed
@@ -389,13 +445,18 @@ public class GestionReservas extends javax.swing.JPanel {
     private javax.swing.JTextField txtNombreCliente;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Metodo para nombrar las columnas de la tabla
+     */
     private void llenarTablaReservas() {
+        // Damos nombre a la columnas de la tabla
         modeloTablaReserva.addColumn("IdReserva");
         modeloTablaReserva.addColumn("NombreCliente");
         modeloTablaReserva.addColumn("ApellidosCliente");
         modeloTablaReserva.addColumn("NumMesa");
         modeloTablaReserva.addColumn("FechaReserva");
         modeloTablaReserva.addColumn("HoraReserva");
+        // Cada vez que se pulse en una fila se rellenaran los campos correspondientes
         tablaReservas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -409,18 +470,26 @@ public class GestionReservas extends javax.swing.JPanel {
         });
     }
 
+    /**
+     * Metodo que lista a las reservas del dia de hoy.
+     */
     private void listarReservas() {
+        // Limpiamos la tabla
         int numFilas = modeloTablaReserva.getRowCount();
         for (int i = 0; i < numFilas; i++) {
             modeloTablaReserva.removeRow(0);
         }
+        // Recogemos la fecha de hoy
         DateTime fechaSistema = DateTime.now();
+        // Nos quedamos solo con la fecha
         String fecha = fechaSistema.toString().subSequence(0, 10).toString();
+        // Listamos las reservas y los usuarios
         ArrayList<Reserva> reservas = ConsultasReservas.listarTodosLasReservas();
         ArrayList<Usuario> usuarios = Consultas.ListarUsuarios();
         for (Reserva r : reservas) {
             for (Usuario u : usuarios) {
                 if (r.getIdCliente() == u.getIdUsuario()) {
+                    // Si la fecha de la reserva es igual a la fecha de hoy saldria en la tabla 
                     if (String.valueOf(r.getFechaHoraReserva().toString().subSequence(0, 10)).equalsIgnoreCase(fecha)) {
                         String datos[] = {String.valueOf(r.getIdReserva()), u.getNombre(), u.getApellidos(), String.valueOf(r.getNumMesa()), String.valueOf(r.getFechaHoraReserva().toString().subSequence(0, 10)), String.valueOf(r.getFechaHoraReserva().toString().substring(11, 16))};
                         modeloTablaReserva.addRow(datos);
@@ -430,6 +499,9 @@ public class GestionReservas extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Metodo para limpiar los campos
+     */
     private void limpiarTextos() {
         jSpinnerIdReserva.setValue((int) 0);
         txtNombreCliente.setText("");
@@ -439,21 +511,28 @@ public class GestionReservas extends javax.swing.JPanel {
         timePickerHora.setTime(LocalTime.now());
     }
 
+    /**
+     * Metodo que lista a los clientes registrados en la base de datos.
+     */
     private void listarClientes() {
+        // Damos nombres a las columnas de la tabla
         modeloTablaClientes.addColumn("Nombre");
         modeloTablaClientes.addColumn("Apellidos");
         modeloTablaClientes.addColumn("Telefono");
         modeloTablaClientes.addColumn("Descuento");
+        // Limpiamos la tabla
         int id = 0;
         int numFilas = modeloTablaClientes.getRowCount();
         for (int i = 0; i < numFilas; i++) {
             modeloTablaClientes.removeRow(0);
         }
+        // Listamos los usuarios y clientes
         ArrayList<Usuario> users = Consultas.ListarUsuarios();
         ArrayList<Cliente> clientes = Consultas.ListarClientes();
         for (Usuario u : users) {
             id = u.getIdUsuario();
             for (Cliente c : clientes) {
+                // Si el id del usuario es el mismo que el del clientes se insertaria en la tabla
                 if (id == c.getIdCliente()) {
                     String datos[] = {u.getNombre(), u.getApellidos(), u.getTelefono(), String.valueOf(c.getDescuento())};
                     modeloTablaClientes.addRow(datos);
