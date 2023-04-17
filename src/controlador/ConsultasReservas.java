@@ -37,6 +37,7 @@ public class ConsultasReservas {
                 listaReservas.add(new Reserva(resultset.getInt("idReserva"),
                         resultset.getInt("idCliente"),
                         resultset.getInt("numMesa"),
+                        resultset.getString("estadoReserva"),
                         resultset.getTimestamp("fechaHoraReserva")));
             }
         } catch (SQLException ex) {
@@ -54,11 +55,11 @@ public class ConsultasReservas {
         return listaReservas;
     }
 
-    public static void insertarReserva(int idReserva, int idCliente, int numMesa, Timestamp fechaHoraReserva) {
+    public static void insertarReserva(int idReserva, int idCliente, int numMesa,String estadoReserva ,Timestamp fechaHoraReserva) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
         try {
-            String sql = "INSERT INTO `reservas` (idReserva,idCliente,numMesa,fechaHoraReserva) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO `reservas` (idReserva,idCliente,numMesa,estadoReserva,fechaHoraReserva) VALUES (?,?,?,?,?)";
             conexionBD = new ConexionDB();
             Connection conexion = conexionBD.abrirConexion();
             try {
@@ -66,7 +67,8 @@ public class ConsultasReservas {
                 sentencia.setInt(1, idReserva);
                 sentencia.setInt(2, idCliente);
                 sentencia.setInt(3, numMesa);
-                sentencia.setTimestamp(4, fechaHoraReserva);
+                sentencia.setString(4, estadoReserva);
+                sentencia.setTimestamp(5, fechaHoraReserva);
                 sentencia.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasReservas.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,19 +111,20 @@ public class ConsultasReservas {
         }
     }
 
-    public static void modificarReserva(int idReserva,int idCliente,int numMesa, Timestamp fechaHoraReserva) {
+    public static void modificarReserva(int idReserva,int idCliente,int numMesa,String estadoReserva ,Timestamp fechaHoraReserva) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
         try {
-            String sql = "UPDATE reservas SET idCliente=?, numMesa=?, fechaHoraReserva=? WHERE idReserva=?";
+            String sql = "UPDATE reservas SET idCliente=?, numMesa=?, estadoReserva=? ,fechaHoraReserva=? WHERE idReserva=?";
             conexionBD = new ConexionDB();
             Connection conexion = conexionBD.abrirConexion();
             try {
                 sentencia = conexion.prepareStatement(sql);
                 sentencia.setInt(1, idCliente);
                 sentencia.setInt(2, numMesa);
-                sentencia.setTimestamp(3, fechaHoraReserva);
-                sentencia.setInt(4, idReserva);
+                sentencia.setString(3, estadoReserva);
+                sentencia.setTimestamp(4, fechaHoraReserva);
+                sentencia.setInt(5, idReserva);
                 sentencia.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasReservas.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,6 +157,7 @@ public class ConsultasReservas {
                 datosReserva = new Reserva(resultset.getInt("idReserva"),
                         resultset.getInt("idCliente"),
                         resultset.getInt("numMesa"),
+                        resultset.getString("estadoReserva"),
                         resultset.getTimestamp("fechaHoraReserva"));
             }
         } catch (SQLException ex) {
@@ -187,6 +191,7 @@ public class ConsultasReservas {
                 datosReserva = new Reserva(resultset.getInt("idReserva"),
                         resultset.getInt("idCliente"),
                         resultset.getInt("numMesa"),
+                        resultset.getString("estadoReserva"),
                         resultset.getTimestamp("fechaHoraReserva"));
             }
         } catch (SQLException ex) {

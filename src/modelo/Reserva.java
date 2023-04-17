@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 public class Reserva {
 
   private int idReserva,idCliente,numMesa;
+  private String estado;
   private Timestamp fechaHoraReserva;
 
     public Reserva(int idReserva) {
@@ -27,11 +28,20 @@ public class Reserva {
         this.fechaHoraReserva = Timestamp.valueOf(fechaHoraReserva);
     }
 
-    public Reserva(int idReserva, int idCliente, int numMesa, Timestamp fechaHoraReserva) {
+    public Reserva(int idReserva, int idCliente, int numMesa,String estadoReserva, Timestamp fechaHoraReserva) {
         this.idReserva = idReserva;
         this.idCliente = idCliente;
         this.numMesa = numMesa;
+        this.estado = estadoReserva;
         this.fechaHoraReserva = fechaHoraReserva;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public int getIdReserva() {

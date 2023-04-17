@@ -307,7 +307,6 @@ public class VentanaLogin extends javax.swing.JFrame {
     * @param password --> Es el texto que contiene el campo password.
     */    
     private void login(String usuario, String password) {
-        System.out.println(password);
         // Creamos un usuario con los dos parametros necesarios
         Usuario user = new Usuario(usuario, password);
         Gson gson = new Gson();
