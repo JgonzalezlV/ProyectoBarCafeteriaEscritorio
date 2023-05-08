@@ -38,6 +38,7 @@ public class ConsultasUsuarios {
                         resultset.getString("nombre"),
                         resultset.getString("apellidos"),
                         resultset.getString("telefono"),
+                        resultset.getString("email"),
                         resultset.getString("tipoUsuario"));
             }
         } catch (SQLException ex) {

@@ -13,19 +13,24 @@ import java.sql.Timestamp;
 public class Pedido {
  
     private int idPedido,idTrabajador,idCliente;
-    private String estado;
+    private String estadoPedido;
     private Timestamp fechaHoraPedido;
 
-    public Pedido(int idPedidos) {
-        this.idPedido = idPedidos;
+    public Pedido(int idPedido) {
+        this.idPedido = idPedido;
     }
     
     public Pedido(int idPedido, int idTrabajador, int idCliente, String estado, Timestamp fechaHoraPedido) {
         this.idPedido = idPedido;
         this.idTrabajador = idTrabajador;
         this.idCliente = idCliente;
-        this.estado = estado;
+        this.estadoPedido = estado;
         this.fechaHoraPedido = fechaHoraPedido;
+    }
+
+    public Pedido(int idPedido, String estado) {
+        this.idPedido = idPedido;
+        this.estadoPedido = estado;
     }
 
     public int getIdPedido() {
@@ -52,12 +57,12 @@ public class Pedido {
         this.idCliente = idCliente;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getEstadoPedido() {
+        return estadoPedido;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstadoPedido(String estadoPedido) {
+        this.estadoPedido = estadoPedido;
     }
 
     public Timestamp getFechaHoraPedido() {
@@ -70,6 +75,6 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "Pedido{" + "idPedidos=" + idPedido + ", idTrabajador=" + idTrabajador + ", idCliente=" + idCliente + ", estado=" + estado + ", fechaHoraPedido=" + fechaHoraPedido + '}';
+        return "Pedido{" + "idPedido=" + idPedido + ", idTrabajador=" + idTrabajador + ", idCliente=" + idCliente + ", estado=" + estadoPedido + ", fechaHoraPedido=" + fechaHoraPedido + '}';
     }
 }

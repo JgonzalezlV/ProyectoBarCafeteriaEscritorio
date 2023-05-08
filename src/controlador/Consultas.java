@@ -5,11 +5,13 @@
 package controlador;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
 import modelo.Mesa;
+import modelo.Mesas_Pedidos;
 import modelo.Pedido;
 import modelo.Producto;
 import modelo.Productos_Pedidos;
@@ -26,8 +28,8 @@ import utilidades.RespuestaJson;
  * @author Esme
  */
 public class Consultas {
-    
-    public static ArrayList<Usuario> ListarUsuarios(){
+
+    public static ArrayList<Usuario> ListarUsuarios() {
         ArrayList<Usuario> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=usuarios";
@@ -35,26 +37,26 @@ public class Consultas {
         lista = (ArrayList<Usuario>) Decodificaciones.deserializeArrayUsuario(respuesta);
         return lista;
     }
-    
-     public static Usuario existeUsuario(String nombretabla,Usuario object){
+
+    public static Usuario existeUsuario(String nombretabla, Usuario object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Usuario user = Decodificaciones.deserializeUsuario(respuesta);
         return user;
-    } 
-     
-     public static Usuario existeUsuario(Usuario object){
+    }
+
+    public static Usuario existeUsuario(Usuario object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
         String values = "tabla=usuarios&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST_USER, values);
         Usuario user = Decodificaciones.deserializeUsuario(respuesta);
         return user;
-    } 
-    
-    public static ArrayList<Trabajador> ListarTrabajadores(){
+    }
+
+    public static ArrayList<Trabajador> ListarTrabajadores() {
         ArrayList<Trabajador> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=trabajadores";
@@ -62,17 +64,17 @@ public class Consultas {
         lista = (ArrayList<Trabajador>) Decodificaciones.deserializeArrayTrabajador(respuesta);
         return lista;
     }
-    
-     public static Trabajador existeTrabajador(Trabajador object){
+
+    public static Trabajador existeTrabajador(Trabajador object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
         String values = "tabla=trabajadores&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Trabajador trabajador = (Trabajador) Decodificaciones.deserializeTrabajador(respuesta);
         return trabajador;
-    } 
-    
-    public static ArrayList<Cliente> ListarClientes(){
+    }
+
+    public static ArrayList<Cliente> ListarClientes() {
         ArrayList<Cliente> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=clientes";
@@ -80,17 +82,17 @@ public class Consultas {
         lista = (ArrayList<Cliente>) Decodificaciones.deserializeArrayCliente(respuesta);
         return lista;
     }
-    
-      public static Cliente existeCliente(String nombretabla,Cliente object){
+
+    public static Cliente existeCliente(String nombretabla, Cliente object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Cliente cliente = Decodificaciones.deserializeCliente(respuesta);
         return cliente;
     }
-      
-      public static ArrayList<Mesa> ListarMesas(){
+
+    public static ArrayList<Mesa> ListarMesas() {
         ArrayList<Mesa> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=mesas";
@@ -98,35 +100,36 @@ public class Consultas {
         lista = (ArrayList<Mesa>) Decodificaciones.deserializeArrayMesa(respuesta);
         return lista;
     }
-    
-      public static Mesa existeMesa(String nombretabla,Mesa object){
+
+    public static Mesa existeMesa(String nombretabla, Mesa object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Mesa mesa = Decodificaciones.deserializeMesa(respuesta);
         return mesa;
     }
-      
-      public static ArrayList<Pedido> ListarPedidos(){
+
+    public static ArrayList<Pedido> ListarPedidos() {
         ArrayList<Pedido> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=pedidos";
         String respuesta = HttpRequest.GET_REQUEST(Constantes.URL_SELECT, values);
+        System.out.println(respuesta);
         lista = (ArrayList<Pedido>) Decodificaciones.deserializeArrayPedido(respuesta);
         return lista;
     }
-    
-      public static Pedido existePedido(String nombretabla,Pedido object){
+
+    public static Pedido existePedido(String nombretabla, Pedido object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Pedido pedido = Decodificaciones.deserializePedido(respuesta);
         return pedido;
     }
-      
-      public static ArrayList<Producto> ListarProductos(){
+
+    public static ArrayList<Producto> ListarProductos() {
         ArrayList<Producto> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=productos";
@@ -134,17 +137,26 @@ public class Consultas {
         lista = (ArrayList<Producto>) Decodificaciones.deserializeArrayProducto(respuesta);
         return lista;
     }
-    
-      public static Producto existeProducto(String nombretabla,Producto object){
+
+    public static Producto existeProducto(String nombretabla, Producto object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Producto producto = Decodificaciones.deserializeProducto(respuesta);
         return producto;
     }
-      
-      public static ArrayList<Productos_Pedidos> ListarProductos_Pedidos(){
+    
+    public static Producto existeProductoNombre(Producto object) {
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(object);
+        String values = "&datos=" + jsonObject;
+        String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST_PRODUCT, values);
+        Producto producto = Decodificaciones.deserializeProducto(respuesta);
+        return producto;
+    }
+
+    public static ArrayList<Productos_Pedidos> ListarProductos_Pedidos() {
         ArrayList<Productos_Pedidos> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=productos_pedidos";
@@ -152,17 +164,17 @@ public class Consultas {
         lista = (ArrayList<Productos_Pedidos>) Decodificaciones.deserializeArrayProductos_Pedidos(respuesta);
         return lista;
     }
-    
-      public static Productos_Pedidos existeProductos_Pedidos(String nombretabla,Productos_Pedidos object){
+
+    public static Productos_Pedidos existeProductos_Pedidos(String nombretabla, Productos_Pedidos object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Productos_Pedidos productos_pedidos = Decodificaciones.deserializeProductos_Pedidos(respuesta);
         return productos_pedidos;
     }
-      
-      public static ArrayList<Reserva> ListarReservas(){
+
+    public static ArrayList<Reserva> ListarReservas() {
         ArrayList<Reserva> lista = new ArrayList<>();
         Gson gson = new Gson();
         String values = "tabla=reservas";
@@ -170,17 +182,17 @@ public class Consultas {
         lista = (ArrayList<Reserva>) Decodificaciones.deserializeArrayReserva(respuesta);
         return lista;
     }
-    
-      public static Reserva existeReserva(String nombretabla,Reserva object){
+
+    public static Reserva existeReserva(String nombretabla, Reserva object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
         Reserva reserva = Decodificaciones.deserializeReserva(respuesta);
         return reserva;
     }
-      
-      public static Reserva reservaYaHecha(Reserva object){
+
+    public static Reserva reservaYaHecha(Reserva object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
         String values = "tabla=reservas&datos=" + jsonObject;
@@ -188,34 +200,62 @@ public class Consultas {
         Reserva reserva = Decodificaciones.deserializeReserva(respuesta);
         return reserva;
     }
+
+    public static ArrayList<Mesas_Pedidos> ListarMesas_Pedidos() {
+        ArrayList<Mesas_Pedidos> lista = new ArrayList<>();
+        Gson gson = new Gson();
+        String values = "tabla=mesas_pedidos";
+        String respuesta = HttpRequest.GET_REQUEST(Constantes.URL_SELECT, values);
+        lista = (ArrayList<Mesas_Pedidos>) Decodificaciones.deserializeArrayMesas_Pedidos(respuesta);
+        return lista;
+    }
     
-    public static RespuestaJson insertar(String nombretabla,Object object){
+    public static Mesas_Pedidos existeMesas_Pedidos(String nombretabla, Mesas_Pedidos object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
+        String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
+        Mesas_Pedidos mesas_pedidos = Decodificaciones.deserializeMesas_Pedidos(respuesta);
+        return mesas_pedidos;
+    }    
+
+    public static RespuestaJson insertar(String nombretabla, Object object) {
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(object);
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_INSERT, values);
         JsonElement jsonElement = gson.fromJson(respuesta, JsonElement.class);
         RespuestaJson respuestaJson = Decodificaciones.deserializeMensajes(jsonElement.getAsString());
         return respuestaJson;
     }
-    
-    public static RespuestaJson actualizar(String nombretabla,Object object){
+
+    public static RespuestaJson actualizar(String nombretabla, Object object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_MODIFY, values);
         JsonElement jsonElement = gson.fromJson(respuesta, JsonElement.class);
         RespuestaJson respuestaJson = Decodificaciones.deserializeMensajes(jsonElement.getAsString());
         return respuestaJson;
     }
-    
- public static RespuestaJson eliminar(String nombretabla,Object object){
+
+    public static RespuestaJson eliminar(String nombretabla, Object object) {
         Gson gson = new Gson();
         String jsonObject = gson.toJson(object);
-        String values = "tabla=" +nombretabla+"&datos=" + jsonObject;
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
         String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_DELETE, values);
         JsonElement jsonElement = gson.fromJson(respuesta, JsonElement.class);
         RespuestaJson respuestaJson = Decodificaciones.deserializeMensajes(jsonElement.getAsString());
         return respuestaJson;
-    }   
+    }
+    
+    public static RespuestaJson actualizarPedido(Object object) {
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(object);
+        String values = "&datos=" + jsonObject;
+        String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_MODIFY_PEDIDO, values);
+        JsonElement jsonElement = gson.fromJson(respuesta, JsonElement.class);
+        RespuestaJson respuestaJson = Decodificaciones.deserializeMensajes(jsonElement.getAsString());
+        return respuestaJson;
+    }
 }

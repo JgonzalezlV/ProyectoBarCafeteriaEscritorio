@@ -55,6 +55,7 @@ public class GestionMesas extends JPanel implements ActionListener {
                 b.addActionListener((ActionEvent e) -> {
                     JButton boton = (JButton) e.getSource();
                     Mesa mesaPulsada = Consultas.existeMesa("mesas",new Mesa(Integer.parseInt(boton.getText().substring(5))));
+                    new Pedido_Mesa(null,true,Integer.parseInt(boton.getText().substring(5)));
                     txtNumMesa.setText(String.valueOf(mesaPulsada.getNumMesa()));
                     txtLocalizacion.setText(mesaPulsada.getLocalizacion());
                     txtPAX.setText(String.valueOf(mesaPulsada.getPAX()));

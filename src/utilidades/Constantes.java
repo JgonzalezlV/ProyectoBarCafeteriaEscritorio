@@ -20,5 +20,7 @@ public class Constantes {
     public static final String CR_ERROR = "CR_ERROR";
     public static final String URL_EXIST = SERVER + "existeObjeto.php";
     public static final String URL_EXIST_USER = SERVER + "existeUsuario.php";
+    public static final String URL_EXIST_PRODUCT = SERVER + "existeProductoPorNombre.php";
     public static final String URL_EXIST_RESERVA = SERVER + "mesaReservada.php";
+    public static final String URL_MODIFY_PEDIDO = SERVER + "actualizarEstadoPedido.php";
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Cliente;
 import modelo.Mesa;
+import modelo.Mesas_Pedidos;
 import modelo.Pedido;
 import modelo.Producto;
 import modelo.Productos_Pedidos;
@@ -133,5 +134,18 @@ public class Decodificaciones {
         Gson gson = new GsonBuilder().create();
         RespuestaJson respuestaJson = gson.fromJson(myJsonString, RespuestaJson.class);
         return respuestaJson;
+    }
+    
+    public static Mesas_Pedidos deserializeMesas_Pedidos(String myJsonString) {
+        Gson gson = new GsonBuilder().create();
+        Mesas_Pedidos mesas_pedidos = gson.fromJson(myJsonString, Mesas_Pedidos.class);
+        return mesas_pedidos;
+    }
+    
+    public static List deserializeArrayMesas_Pedidos(String myJsonString) {
+        Gson gson = new GsonBuilder().create();
+        Type listType = new TypeToken<ArrayList<Mesas_Pedidos>>(){}.getType();
+        List<Mesas_Pedidos> mesas_pedidos = gson.fromJson(myJsonString, listType);
+        return mesas_pedidos;
     }
 }

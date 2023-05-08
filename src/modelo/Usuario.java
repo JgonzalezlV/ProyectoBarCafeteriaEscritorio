@@ -11,7 +11,7 @@ package modelo;
 public class Usuario {
     
     private int idUsuario;
-    private String usuario,password,nombre,apellidos,telefono,tipoUsuario;
+    private String usuario,password,nombre,apellidos,telefono,email,tipoUsuario;
 
     public Usuario(int idUsuario) {
         this.idUsuario = idUsuario;
@@ -32,22 +32,33 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-    public Usuario(String usuario, String password, String nombre, String apellidos, String telefono, String tipoUsuario) {
+    public Usuario(String usuario, String password, String nombre, String apellidos, String telefono, String email, String tipoUsuario) {
         this.usuario = usuario;
         this.password = password;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
+        this.email = email;
         this.tipoUsuario = tipoUsuario;
     }
     
-    public Usuario(int idUsuario, String usuario, String password, String nombre, String apellidos, String telefono, String tipoUsuario) {
+    public Usuario(String usuario, String nombre, String apellidos, String telefono, String email, String tipoUsuario) {
+        this.usuario = usuario;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.email = email;
+        this.tipoUsuario = tipoUsuario;
+    }
+    
+    public Usuario(int idUsuario, String usuario, String password, String nombre, String apellidos, String telefono, String email, String tipoUsuario) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.password = password;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.telefono = telefono;
+        this.email = email;
         this.tipoUsuario = tipoUsuario;
     }
 
@@ -97,6 +108,14 @@ public class Usuario {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTipoUsuario() {

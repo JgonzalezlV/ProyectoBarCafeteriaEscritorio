@@ -18,8 +18,17 @@ public class Producto {
         this.idProducto = idProducto;
     }
 
+    public Producto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
     public Producto(int idProducto, String nombreProducto, double precioProducto) {
         this.idProducto = idProducto;
+        this.nombreProducto = nombreProducto;
+        this.precioProducto = precioProducto;
+    }
+
+    public Producto(String nombreProducto, double precioProducto) {
         this.nombreProducto = nombreProducto;
         this.precioProducto = precioProducto;
     }

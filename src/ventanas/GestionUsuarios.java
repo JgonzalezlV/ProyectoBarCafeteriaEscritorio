@@ -52,7 +52,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         llenarModeloTablaUsuarios();
         listarUsuarios();
         llenarComboBox();
-        txtTelefono.setEditable(false);
+        txtTelefono.setEnabled(false);
         //tablaUsuarios.setRowSorter(tablaOrdenada);
         //sportColumn = tablaUsuarios.getColumnModel().getColumn(5);
         //sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
@@ -85,6 +85,8 @@ public class GestionUsuarios extends javax.swing.JPanel {
         comboBoxTipoUsuario = new javax.swing.JComboBox<>();
         txtNombre = new javax.swing.JTextField();
         txtApellidos = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnModificarUsuario = new javax.swing.JButton();
         btnEliminarUsuario = new javax.swing.JButton();
@@ -106,7 +108,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         tablaUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(tablaUsuarios);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 570, 468));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 750, 480));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(105, 56, 41)), "Datos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Comic Sans MS", 2, 18))); // NOI18N
 
@@ -122,6 +124,8 @@ public class GestionUsuarios extends javax.swing.JPanel {
 
         jLabel7.setText("TipoUsuario");
 
+        jLabel2.setText("Email");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -130,38 +134,39 @@ public class GestionUsuarios extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
-                        .addGap(62, 62, 62))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(17, 17, 17)
-                                        .addComponent(jLabel4)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                                    .addComponent(txtPassword))
-                                .addGap(55, 55, 55)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(56, 56, 56))
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboBoxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7)
-                        .addGap(45, 45, 45))))
+                        .addGap(104, 104, 104))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtUsuario))
+                                .addGap(43, 43, 43))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                                .addComponent(txtApellidos))
+                            .addComponent(jLabel5)
+                            .addComponent(comboBoxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addGap(121, 121, 121))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,26 +179,30 @@ public class GestionUsuarios extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboBoxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
-        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, 330, -1));
+        add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 20, 330, 260));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(105, 56, 41)), "Operaciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Comic Sans MS", 2, 18))); // NOI18N
 
@@ -235,7 +244,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
                     .addComponent(btnInsertarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnNuevoUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnModificarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
+                    .addComponent(btnModificarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -248,11 +257,11 @@ public class GestionUsuarios extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addComponent(btnModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 252, 320, 220));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 290, 330, 220));
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -267,13 +276,13 @@ public class GestionUsuarios extends javax.swing.JPanel {
         try {
             user = Consultas.existeUsuario("usuarios", user);
             // Si existe se crea otro usuario con los valores modificados
-            Usuario userModificado = new Usuario(txtUsuario.getText(), encriptar(password, claveEncriptacion), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+            Usuario userModificado = new Usuario(txtUsuario.getText(), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(),txtEmail.getText() , String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
             // Saltara el cuadro de confirmacion
             int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que quieres modificar el usuario?", "Confirmacion", JOptionPane.YES_NO_OPTION);
             // Si elige si se muestra el mensaje que responde el webservice
             if (eleccion == JOptionPane.YES_OPTION) {
                 RespuestaJson respuestaJson = Consultas.actualizar("usuarios", userModificado);
-                JOptionPane.showMessageDialog(this, respuestaJson.getValue());
+                JOptionPane.showMessageDialog(this, respuestaJson.getValue(),"Información", JOptionPane.INFORMATION_MESSAGE);
                 listarUsuarios();
                 limpiarTextos();
             }
@@ -299,7 +308,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
             if (eleccion == JOptionPane.YES_OPTION) {
                 RespuestaJson respuestaJson = Consultas.eliminar("usuarios", userEliminado);
                 // Muestra el mensaje que manda el webservice
-                JOptionPane.showMessageDialog(this, respuestaJson.getValue());
+                JOptionPane.showMessageDialog(this, respuestaJson.getValue(),"Información", JOptionPane.INFORMATION_MESSAGE);
                 listarUsuarios();
                 limpiarTextos();
             }
@@ -326,10 +335,10 @@ public class GestionUsuarios extends javax.swing.JPanel {
             // Si no existe primero se comprueba la longitud del tele
             if (ValidarDatos.validarTelefono(txtTelefono.getText())) {
                 // Si no existe se crea un usuario con los datos correspondientes
-                Usuario userInsertar = new Usuario(txtUsuario.getText(), encriptar(password, claveEncriptacion), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
+                Usuario userInsertar = new Usuario(txtUsuario.getText(), encriptar(password, claveEncriptacion), txtNombre.getText(), txtApellidos.getText(), txtTelefono.getText() ,txtEmail.getText(), String.valueOf(comboBoxTipoUsuario.getSelectedItem()));
                 RespuestaJson respuestaJson = Consultas.insertar("usuarios",userInsertar);
                 // Y se mostraria el mensaje 
-                JOptionPane.showMessageDialog(this, respuestaJson.getValue());
+                JOptionPane.showMessageDialog(this, respuestaJson.getValue(),"Información", JOptionPane.INFORMATION_MESSAGE);
                 listarUsuarios();
                 limpiarTextos();
             }else{
@@ -347,7 +356,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         // Limpia los textos y lleva el foco al texto del nombre para insertar un nuevo usuario
         limpiarTextos();
         txtNombre.requestFocus();
-        txtTelefono.setEditable(true);
+        txtTelefono.setEnabled(true);
     }//GEN-LAST:event_btnNuevoUsuarioActionPerformed
 
 
@@ -358,6 +367,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
     private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JComboBox<String> comboBoxTipoUsuario;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -371,6 +381,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tablaUsuarios;
     private javax.swing.JTextField txtApellidos;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtTelefono;
@@ -386,6 +397,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         modeloTablaUsuarios.addColumn("Telefono");
         modeloTablaUsuarios.addColumn("Usuario");
         modeloTablaUsuarios.addColumn("Password");
+        modeloTablaUsuarios.addColumn("Email");
         modeloTablaUsuarios.addColumn("Tipo usuario");
         // Cada vez que se pulse en una fila u columna se podran en los campos los valores correspondientes
         tablaUsuarios.addMouseListener(new MouseAdapter() {
@@ -396,7 +408,8 @@ public class GestionUsuarios extends javax.swing.JPanel {
                 txtTelefono.setText(tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 2).toString());
                 txtUsuario.setText(tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 3).toString());
                 txtPassword.setText(tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 4).toString());
-                comboBoxTipoUsuario.setSelectedItem(tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 5).toString());
+                txtEmail.setText(tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 5).toString());
+                comboBoxTipoUsuario.setSelectedItem(tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 6).toString());
             }
         });
     }
@@ -415,7 +428,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         // Se recorre el arraylist anteriormente creado
         for (Usuario u : users) {
             // se van asignando los valores a un array de cadenas
-            String datos[] = { u.getNombre(), u.getApellidos(), u.getTelefono(), u.getUsuario(), u.getPassword(), u.getTipoUsuario()};
+            String datos[] = { u.getNombre(), u.getApellidos(), u.getTelefono(), u.getUsuario(), u.getPassword(),u.getEmail(), u.getTipoUsuario()};
             // y se agrega a la tabla.
             modeloTablaUsuarios.addRow(datos);
         }
@@ -430,6 +443,7 @@ public class GestionUsuarios extends javax.swing.JPanel {
         txtNombre.setText("");
         txtApellidos.setText("");
         txtTelefono.setText("");
+        txtEmail.setText("");
         comboBoxTipoUsuario.setSelectedItem("");
     }
     
@@ -452,15 +466,11 @@ public class GestionUsuarios extends javax.swing.JPanel {
     private SecretKeySpec crearClave(String clave){
         SecretKeySpec secretKey = null;
         try {
-            byte[] claveEncriptacion = clave.getBytes("UTF-8");
-            
+            byte[] claveEncriptacion = clave.getBytes("UTF-8");  
             MessageDigest sha = MessageDigest.getInstance("SHA-1");
-            
             claveEncriptacion = sha.digest(claveEncriptacion);
-            claveEncriptacion = Arrays.copyOf(claveEncriptacion, 16);
-            
-            secretKey = new SecretKeySpec(claveEncriptacion, "AES");
-            
+            claveEncriptacion = Arrays.copyOf(claveEncriptacion, 16);      
+            secretKey = new SecretKeySpec(claveEncriptacion, "AES");  
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
@@ -485,14 +495,11 @@ public class GestionUsuarios extends javax.swing.JPanel {
         String encriptado = "";
         try {
             SecretKeySpec secretKey = crearClave(claveSecreta);
-            
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            
             byte[] datosEncriptar = datos.getBytes("UTF-8");
             byte[] bytesEncriptados = cipher.doFinal(datosEncriptar);
             encriptado = Base64.getEncoder().encodeToString(bytesEncriptados);
-            
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(GestionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {

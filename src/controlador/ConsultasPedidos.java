@@ -35,7 +35,7 @@ public class ConsultasPedidos {
                 listaPedidos.add(new Pedido(resultset.getInt("idPedido"),
                         resultset.getInt("idTrabajador"),
                         resultset.getInt("idCliente"),
-                        resultset.getString("estado"),
+                        resultset.getString("estadoPedido"),
                         resultset.getTimestamp("fechaHoraPedido")));
             }
         } catch (SQLException ex) {
@@ -53,9 +53,10 @@ public class ConsultasPedidos {
         return listaPedidos;
     }
 
-    public static void insertarPedido(int idPedido,int idTrabajador,int idCliente,String estado,Timestamp fechaHoraPedido) {
+    public static boolean insertarPedido(int idPedido,int idTrabajador,int idCliente,String estado,Timestamp fechaHoraPedido) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
+        boolean insertado = false;
         try {
             String sql = "INSERT INTO pedidos VALUES (?,?,?,?,?)";
             conexionBD = new ConexionDB();
@@ -68,6 +69,7 @@ public class ConsultasPedidos {
                 sentencia.setString(4, estado);
                 sentencia.setTimestamp(5, fechaHoraPedido);
                 sentencia.executeUpdate();
+                insertado = true;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasPedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -81,11 +83,13 @@ public class ConsultasPedidos {
                 Logger.getLogger(ConsultasPedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return insertado;
     }
 
-    public static void eliminarPedido(int idPedido) {
+    public static boolean eliminarPedido(int idPedido) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
+        boolean eliminado = false;
         try {
             String sql = "DELETE FROM pedidos WHERE idPedido=?";
             conexionBD = new ConexionDB();
@@ -94,6 +98,7 @@ public class ConsultasPedidos {
                 sentencia = conexion.prepareStatement(sql);
                 sentencia.setInt(1, idPedido);
                 sentencia.executeUpdate();
+                eliminado = true;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasPedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -107,13 +112,15 @@ public class ConsultasPedidos {
                 Logger.getLogger(ConsultasPedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return eliminado;
     }
 
-    public static void modificarPedido(int idPedido,String nuevoEstado, Timestamp fechaHoraPedido) {
+    public static boolean modificarPedido(int idPedido,String nuevoEstado, Timestamp fechaHoraPedido) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
+        boolean modificado = false;
         try {
-            String sql = "UPDATE  pedidos SET estado=?,fechaHoraPedido=? WHERE idPedido=?";
+            String sql = "UPDATE  pedidos SET estadoPedido=?,fechaHoraPedido=? WHERE idPedido=?";
             conexionBD = new ConexionDB();
             Connection conexion = conexionBD.abrirConexion();
             try {
@@ -122,6 +129,7 @@ public class ConsultasPedidos {
                 sentencia.setTimestamp(2, fechaHoraPedido);
                 sentencia.setInt(3, idPedido);
                sentencia.executeUpdate();
+               modificado = true;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasPedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -135,6 +143,7 @@ public class ConsultasPedidos {
                 Logger.getLogger(ConsultasPedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return modificado;
     }
 
     public static Pedido existePedido(int idPedido) {
@@ -152,7 +161,7 @@ public class ConsultasPedidos {
                 datosPedido = new Pedido(resultset.getInt("idPedido"),
                         resultset.getInt("idTrabajador"),
                         resultset.getInt("idCliente"),
-                        resultset.getString("estado"),
+                        resultset.getString("estadoPedido"),
                         resultset.getTimestamp("fechaHoraPedido"));
             }
         } catch (SQLException ex) {

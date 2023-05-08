@@ -11,5 +11,5 @@ package controlador;
 public interface Configuracion {
 
     String DBHOST = "localhost";
-    String DBNAME = "bar";
+    String DBNAME = "bar_cafeteria";
 }

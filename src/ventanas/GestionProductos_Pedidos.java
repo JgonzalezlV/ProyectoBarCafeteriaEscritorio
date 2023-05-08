@@ -17,6 +17,7 @@ import modelo.Pedido;
 import modelo.Producto;
 import modelo.Productos_Pedidos;
 import modelo.Usuario;
+import org.joda.time.DateTime;
 
 /**
  *Panel donde se inserta productos en pedidos
@@ -36,9 +37,9 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         initComponents();
         llenarModeloTabla();
         listarProductos_Pedidos();
-        llenarTablaProductos();
-        llenarTablaPedidos();
-        txtId.setEnabled(false);
+        llenarModeloProductos();
+        llenarModeloPedidos();
+        jSpinnerIdPP.setEnabled(false);
     }
 
     /**
@@ -58,15 +59,17 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
         txtNombreProducto = new javax.swing.JTextField();
         jSpinnerIdPedido = new javax.swing.JSpinner();
         jSpinnerCantidadProducto = new javax.swing.JSpinner();
+        jSpinnerIdPP = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         btnInsertar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
+        btnActualizarProductos = new javax.swing.JButton();
+        btnActulizarPedidos = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -110,12 +113,12 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSpinnerIdPP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel4)
                         .addComponent(jLabel3)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1))
                     .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -126,9 +129,9 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(26, 26, 26)
+                .addComponent(jSpinnerIdPP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel2)
                 .addGap(14, 14, 14)
                 .addComponent(jSpinnerIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,6 +184,20 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             }
         });
 
+        btnActualizarProductos.setText("Actualizar Productos");
+        btnActualizarProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarProductosActionPerformed(evt);
+            }
+        });
+
+        btnActulizarPedidos.setText("Actualizar Pedidos");
+        btnActulizarPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActulizarPedidosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -189,16 +206,14 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                        .addComponent(btnEliminar)
-                        .addGap(66, 66, 66))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(btnInsertar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActualizarProductos))
+                .addGap(66, 66, 66)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActulizarPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnInsertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,11 +222,15 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevo)
                     .addComponent(btnInsertar))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnModificar)
                     .addComponent(btnEliminar))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnActualizarProductos)
+                    .addComponent(btnActulizarPedidos))
+                .addGap(0, 26, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -286,7 +305,7 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
      * @param evt 
      */
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        int id = Integer.parseInt(txtId.getText());
+        int id = (int) jSpinnerIdPP.getValue();
         int idPedido = (int) jSpinnerIdPedido.getValue();
         Producto producto = ConsultasProductos.existeProducto(txtNombreProducto.getText());
         // Ahora comprobamos si el id existe
@@ -296,52 +315,85 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
                 // Comprobamos si existe el producto
                 if (producto!= null) {
                     // Se inserta los productos en los pedidos
-                    ConsultasProductos_Pedidos.insertarProductos_Pedidos(id, idPedido, producto.getIdProducto(), (int) jSpinnerCantidadProducto.getValue());
-                    listarProductos_Pedidos();
+                    boolean insertado = ConsultasProductos_Pedidos.insertarProductos_Pedidos(id, idPedido, producto.getIdProducto(), (int) jSpinnerCantidadProducto.getValue());
+                    if (insertado) {
+                        JOptionPane.showMessageDialog(null, "Insertado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+                        listarProductos_Pedidos();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Se ha producido un error", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                     limpiarTextos();
                 }else{
                     // Si el producto no existe
-                    JOptionPane.showMessageDialog(null, "Producto no existe");
+                    JOptionPane.showMessageDialog(null, "Producto no existe", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
-                JOptionPane.showMessageDialog(null, "Pedido no existe");
+                // Si el pedido no existe
+                JOptionPane.showMessageDialog(null, "Pedido no existe", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }else{
-            JOptionPane.showMessageDialog(null, "El id introducido ya existe");
+            // Si el id ya esta registrado
+            JOptionPane.showMessageDialog(null, "El id introducido ya existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        int id = Integer.parseInt(txtId.getText());
+        // Guardamos el id 
+        int id = (int) jSpinnerIdPP.getValue();
+        // Comprobamos si existe dicho id en nuestra bd
         if (ConsultasProductos_Pedidos.existeProducto(id) != null) {
-            ConsultasProductos_Pedidos.eliminarProducto_Pedidos(id);
-            listarProductos_Pedidos();
-            limpiarTextos();
+            // Si existe y seleccionas si, se borra
+            int eleccion = JOptionPane.showConfirmDialog(this,"¿Estas seguro de que lo quieres eliminar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (eleccion == JOptionPane.YES_OPTION) {
+                boolean eliminado = ConsultasProductos_Pedidos.eliminarProducto_Pedidos(id);
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(null, "Eliminado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    listarProductos_Pedidos();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Se ha producido un error", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                limpiarTextos(); 
+            }
         }else{
-            JOptionPane.showMessageDialog(null, "El id introducido no existe");
+            // Si el id introducido no existe
+            JOptionPane.showMessageDialog(null, "El id introducido no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
-        int id = Integer.parseInt(txtId.getText());
+        // Guardamos el id 
+        int id = (int) jSpinnerIdPP.getValue();
+        // Guardamos el id del pedido
         int idPedido = (int) jSpinnerIdPedido.getValue();
+        // Comprobamos si existe el producto mediante su nombre
         Producto producto = ConsultasProductos.existeProducto(txtNombreProducto.getText());
+        // Comprobamos si exite el idPP
         if (ConsultasProductos_Pedidos.existeProducto(id) != null) {
+            // Si no existe, ahora se comprueba el id del pedido
             if (ConsultasPedidos.existePedido(idPedido) != null) {
+                // Si producto es distinto que nulo 
                 if (producto != null) {
-                    ConsultasProductos_Pedidos.modificarProducto_Pedidos(id, idPedido, producto.getIdProducto(),(int) jSpinnerCantidadProducto.getValue());
-                    listarProductos_Pedidos();
-                    limpiarTextos();
-                }else{
-                    JOptionPane.showMessageDialog(null, "Producto no existe");
+                    // Te pedira la confirmacion de dicha operacion
+                    int eleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro de que lo quieres modificar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+                    if (eleccion == JOptionPane.YES_OPTION) {
+                        // Si has pulsado en si, se modificara 
+                        boolean modificado = ConsultasProductos_Pedidos.modificarProducto_Pedidos(id, idPedido, producto.getIdProducto(), (int) jSpinnerCantidadProducto.getValue());
+                        if (!modificado) {
+                            JOptionPane.showMessageDialog(null, "Modificado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+                            listarProductos_Pedidos();
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Se ha producido un error", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        limpiarTextos();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Producto no existe", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            }else{
-                JOptionPane.showMessageDialog(null, "Pedido no existe");
+            } else {
+                JOptionPane.showMessageDialog(null, "Pedido no existe", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "El id introducido ya existe");
+        } else {
+            JOptionPane.showMessageDialog(null, "El id introducido ya existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -355,11 +407,21 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             ultimoIdPP = productos_pedido.getIdPP();
         }
         ultimoIdPP++;
-        txtId.setText(String.valueOf(ultimoIdPP));
+        jSpinnerIdPP.setValue((int) ultimoIdPP);
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnActualizarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarProductosActionPerformed
+        listarProductos();
+    }//GEN-LAST:event_btnActualizarProductosActionPerformed
+
+    private void btnActulizarPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActulizarPedidosActionPerformed
+        listarPedidos();
+    }//GEN-LAST:event_btnActulizarPedidosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarProductos;
+    private javax.swing.JButton btnActulizarPedidos;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
@@ -376,11 +438,11 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinnerCantidadProducto;
+    private javax.swing.JSpinner jSpinnerIdPP;
     private javax.swing.JSpinner jSpinnerIdPedido;
     private javax.swing.JTable tablaPedidos;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JTable tablaProductos_Pedidos;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNombreProducto;
     // End of variables declaration//GEN-END:variables
 
@@ -392,7 +454,7 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
         tablaProductos_Pedidos.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                txtId.setText(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 0).toString());
+                jSpinnerIdPP.setValue(Integer.parseInt(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 0).toString()));
                 jSpinnerIdPedido.setValue(Integer.parseInt(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 1).toString()));
                 txtNombreProducto.setText(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 2).toString());
                 jSpinnerCantidadProducto.setValue(Integer.parseInt(tablaProductos_Pedidos.getValueAt(tablaProductos_Pedidos.getSelectedRow(), 3).toString()));
@@ -414,13 +476,13 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
     }
     
     private void limpiarTextos(){
-        txtId.setText("");
+        jSpinnerIdPP.setValue((int) 0);
         jSpinnerIdPedido.setValue((int) 0);
         txtNombreProducto.setText("");
         jSpinnerCantidadProducto.setValue((int) 0);
     }
 
-    private void llenarTablaProductos() {
+    private void llenarModeloProductos(){
         modeloTablaProductos.addColumn("Nombre");
         modeloTablaProductos.addColumn("Precio");
         int numFilas = modeloTablaProductos.getRowCount();
@@ -432,31 +494,78 @@ public class GestionProductos_Pedidos extends javax.swing.JPanel {
             String datos[] = {p.getNombreProducto(),String.valueOf(p.getPrecioProducto())};
             modeloTablaProductos.addRow(datos);
         }
+}
+    
+    private void listarProductos() {
+        int numFilas = modeloTablaProductos.getRowCount();
+        for (int i = 0; i < numFilas; i++) {
+            modeloTablaProductos.removeRow(0);
+        }
+        ArrayList<Producto> productos = Consultas.ListarProductos();
+        for (Producto p : productos) {
+            String datos[] = {p.getNombreProducto(),String.valueOf(p.getPrecioProducto())};
+            modeloTablaProductos.addRow(datos);
+        }
     }
     
-    private void llenarTablaPedidos() {
+    private void llenarModeloPedidos(){
         modeloTablaPedidos.addColumn("Id del Pedido");
         modeloTablaPedidos.addColumn("Trabajador");
         modeloTablaPedidos.addColumn("Cliente");
         modeloTablaPedidos.addColumn("Estado");
-        modeloTablaPedidos.addColumn("Fecha y hora del pedido");
-         String nombreTrabajador = null, nombreCliente = null;
+        modeloTablaPedidos.addColumn("Fecha pedido");
+        modeloTablaPedidos.addColumn("Hora pedido");
+        
+        String nombreTrabajador = null, nombreCliente = null;
         int numFilas = modeloTablaPedidos.getRowCount();
         for (int i = 0; i < numFilas; i++) {
             modeloTablaPedidos.removeRow(0);
         }
-        ArrayList<Pedido> pedidos = Consultas.ListarPedidos();
+        // Guardamos la fecha de hoy
+        DateTime fechaActual = DateTime.now();
+        String fechaHoy = fechaActual.toString().substring(0, 10);
+        ArrayList<Pedido> pedidos = ConsultasPedidos.listarTodosLosPedidos();
         ArrayList<Usuario> usuarios = Consultas.ListarUsuarios();
-        for (Usuario u : usuarios) {
-            for (Pedido p : pedidos) {
-                if (u.getIdUsuario() == p.getIdTrabajador()) {
-                    nombreTrabajador = u.getNombre();
-                } else if (u.getIdUsuario() == p.getIdCliente()) {
-                    nombreCliente = u.getNombre();
-                    String datos[] = {String.valueOf(p.getIdPedido()), nombreTrabajador, nombreCliente, p.getEstado(), String.valueOf(p.getFechaHoraPedido())};
-                    modeloTablaPedidos.addRow(datos);
+        for (Pedido p : pedidos) {
+            if (fechaHoy.equalsIgnoreCase(String.valueOf(p.getFechaHoraPedido().toString().substring(0, 10)))) {
+                for (Usuario u : usuarios) {
+                    if (u.getIdUsuario() == p.getIdTrabajador()) {
+                        nombreTrabajador = u.getNombre();
+                    } else if (u.getIdUsuario() == p.getIdCliente()) {
+                        nombreCliente = u.getNombre();
+                    }
                 }
+                String datos[] = {String.valueOf(p.getIdPedido()), nombreTrabajador, nombreCliente, p.getEstadoPedido(), String.valueOf(p.getFechaHoraPedido().toString().substring(0, 10)), p.getFechaHoraPedido().toString().substring(11, 16)};
+                modeloTablaPedidos.addRow(datos);
             }
+            
+        }
+    }
+    
+    private void listarPedidos() {
+        String nombreTrabajador = null, nombreCliente = null;
+        int numFilas = modeloTablaPedidos.getRowCount();
+        for (int i = 0; i < numFilas; i++) {
+            modeloTablaPedidos.removeRow(0);
+        }
+        // Guardamos la fecha de hoy
+        DateTime fechaActual = DateTime.now();
+        String fechaHoy = fechaActual.toString().substring(0, 10);
+        ArrayList<Pedido> pedidos = ConsultasPedidos.listarTodosLosPedidos();
+        ArrayList<Usuario> usuarios = Consultas.ListarUsuarios();
+        for (Pedido p : pedidos) {
+            if (fechaHoy.equalsIgnoreCase(String.valueOf(p.getFechaHoraPedido().toString().substring(0, 10)))) {
+                for (Usuario u : usuarios) {
+                    if (u.getIdUsuario() == p.getIdTrabajador()) {
+                        nombreTrabajador = u.getNombre();
+                    } else if (u.getIdUsuario() == p.getIdCliente()) {
+                        nombreCliente = u.getNombre();
+                    }
+                }
+                String datos[] = {String.valueOf(p.getIdPedido()), nombreTrabajador, nombreCliente, p.getEstadoPedido(), String.valueOf(p.getFechaHoraPedido().toString().substring(0, 10)), p.getFechaHoraPedido().toString().substring(11, 16)};
+            modeloTablaPedidos.addRow(datos);
+            }
+            
         }
     }
     

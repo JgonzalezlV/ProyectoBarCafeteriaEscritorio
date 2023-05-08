@@ -39,6 +39,8 @@ public class GestionPedidos extends javax.swing.JPanel {
         llenarModeloTabla();
         listarPedidos();
         modeloTablaProductosPedidos();
+        llenarComboBox();
+        jSpinnerIdPedido.setEnabled(false);
     }
 
     /**
@@ -58,13 +60,13 @@ public class GestionPedidos extends javax.swing.JPanel {
         btnInsertarPedido = new javax.swing.JButton();
         btnEliminarPedido = new javax.swing.JButton();
         btnModificarPedido = new javax.swing.JButton();
+        btnNuevoPedido = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtIdPedido = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtNombreTrabajador = new javax.swing.JTextField();
-        txtEstado = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         timePickerHoraPedido = new com.github.lgooddatepicker.components.TimePicker();
         datePickerFechaPedido = new com.github.lgooddatepicker.components.DatePicker();
@@ -72,6 +74,8 @@ public class GestionPedidos extends javax.swing.JPanel {
         txtNombreCliente = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtApellidosCliente = new javax.swing.JTextField();
+        jSpinnerIdPedido = new javax.swing.JSpinner();
+        jComboBoxEstadoPedido = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
@@ -120,28 +124,41 @@ public class GestionPedidos extends javax.swing.JPanel {
             }
         });
 
+        btnNuevoPedido.setText("Nuevo Pedido");
+        btnNuevoPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoPedidoActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Actualizar Productos");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnModificarPedido)
-                    .addComponent(btnEliminarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnInsertarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnEliminarPedido, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificarPedido, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnInsertarPedido, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNuevoPedido, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addComponent(btnNuevoPedido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnInsertarPedido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminarPedido)
                 .addGap(12, 12, 12)
                 .addComponent(btnModificarPedido)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jButton2))
         );
 
         jLabel1.setText("Id del pedido: ");
@@ -166,23 +183,28 @@ public class GestionPedidos extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1)
-                            .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtNombreTrabajador)
-                            .addComponent(jLabel6)
-                            .addComponent(txtNombreCliente))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNombreTrabajador)
+                                .addComponent(jLabel6)
+                                .addComponent(txtNombreCliente))
+                            .addComponent(jSpinnerIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(datePickerFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(timePickerHoraPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(datePickerFechaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel5)
+                                            .addComponent(timePickerHoraPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jComboBoxEstadoPedido, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(86, 86, 86)))
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -191,7 +213,7 @@ public class GestionPedidos extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(101, 101, 101)
                         .addComponent(txtApellidosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,8 +226,8 @@ public class GestionPedidos extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSpinnerIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -227,7 +249,7 @@ public class GestionPedidos extends javax.swing.JPanel {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtApellidosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -269,13 +291,12 @@ public class GestionPedidos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPedidoActionPerformed
-        // TODO add your handling code here:
-        int idPedido = Integer.parseInt(txtIdPedido.getText());
+        int idPedido = (int) jSpinnerIdPedido.getValue();
         String fechaPedido = Date.valueOf(datePickerFechaPedido.getDate()).toString();
         String horaPedido = Time.valueOf(timePickerHoraPedido.getTime()).toString();
         String fechaHoraPedido = fechaPedido.concat(" "+horaPedido);
         if (ConsultasPedidos.existePedido(idPedido) != null) {
-            ConsultasPedidos.modificarPedido(idPedido, txtEstado.getText(),Timestamp.valueOf(fechaHoraPedido));
+            ConsultasPedidos.modificarPedido(idPedido, jComboBoxEstadoPedido.getSelectedItem().toString(),Timestamp.valueOf(fechaHoraPedido));
             JOptionPane.showMessageDialog(null, "Pedido modificado");
             listarPedidos();
             limpiarTextos();
@@ -285,8 +306,7 @@ public class GestionPedidos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarPedidoActionPerformed
 
     private void btnEliminarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPedidoActionPerformed
-        // TODO add your handling code here:
-        int idPedido = Integer.parseInt(txtIdPedido.getText());
+        int idPedido = (int) jSpinnerIdPedido.getValue();
         if (ConsultasPedidos.existePedido(idPedido) != null) {
             ConsultasPedidos.eliminarPedido(idPedido);
             JOptionPane.showMessageDialog(null, "Pedido eliminado");
@@ -298,19 +318,21 @@ public class GestionPedidos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarPedidoActionPerformed
 
     private void btnInsertarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarPedidoActionPerformed
-        // TODO add your handling code here:
-        int idPedido = Integer.parseInt(txtIdPedido.getText());
+        int idPedido = (int) jSpinnerIdPedido.getValue();
         String fechaPedido = Date.valueOf(datePickerFechaPedido.getDate()).toString();
         String horaPedido = Time.valueOf(timePickerHoraPedido.getTime()).toString();
         String fechaHoraPedido = fechaPedido.concat(" "+horaPedido);
         Usuario userCliente = Consultas.existeUsuario(new Usuario(txtNombreCliente.getText(), txtApellidosCliente.getText(),""));
-        System.out.println(userCliente);
         Usuario userTrabajador = ConsultasUsuarios.existeUsuarioTrabajador(txtNombreTrabajador.getText());
         if (ConsultasPedidos.existePedido(idPedido) == null) {
             if (userCliente != null) {
                 if (userTrabajador != null) {
-                    ConsultasPedidos.insertarPedido(idPedido,userTrabajador.getIdUsuario(), userCliente.getIdUsuario(), txtEstado.getText(),Timestamp.valueOf(fechaHoraPedido));
-                    JOptionPane.showMessageDialog(null, "Pedido insertado");
+                    boolean insertado = ConsultasPedidos.insertarPedido(idPedido,userTrabajador.getIdUsuario(), userCliente.getIdUsuario(), jComboBoxEstadoPedido.getSelectedItem().toString(),Timestamp.valueOf(fechaHoraPedido));
+                    if (insertado) {
+                        JOptionPane.showMessageDialog(null, "Pedido insertado", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Pedido no insertado", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                     listarPedidos();
                     limpiarTextos();
                 }else {
@@ -324,12 +346,32 @@ public class GestionPedidos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnInsertarPedidoActionPerformed
 
+    private void btnNuevoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoPedidoActionPerformed
+        limpiarTextos();
+        // Creamos una variable para hacer el id de la reserva automatico
+        int ultimoIdPedido = 0;
+        // Listamos todas las reservas 
+        ArrayList<Pedido> pedidos = ConsultasPedidos.listarTodosLosPedidos();
+        for (Pedido pedido : pedidos) {
+            // Por cada reserva la varible va incrementandose
+            ultimoIdPedido = pedido.getIdPedido();
+        }
+        // Y para tener el siguiente id de reserva 
+        ultimoIdPedido++;
+        // Y le damos el valor al spinner
+        jSpinnerIdPedido.setValue((int) ultimoIdPedido);
+        txtNombreTrabajador.requestFocus();
+    }//GEN-LAST:event_btnNuevoPedidoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminarPedido;
     private javax.swing.JButton btnInsertarPedido;
     private javax.swing.JButton btnModificarPedido;
+    private javax.swing.JButton btnNuevoPedido;
     private com.github.lgooddatepicker.components.DatePicker datePickerFechaPedido;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBoxEstadoPedido;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -342,12 +384,11 @@ public class GestionPedidos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner jSpinnerIdPedido;
     private javax.swing.JTable tablaPedidos;
     private javax.swing.JTable tablaProductos;
     private com.github.lgooddatepicker.components.TimePicker timePickerHoraPedido;
     private javax.swing.JTextField txtApellidosCliente;
-    private javax.swing.JTextField txtEstado;
-    private javax.swing.JTextField txtIdPedido;
     private javax.swing.JTextField txtNombreCliente;
     private javax.swing.JTextField txtNombreTrabajador;
     // End of variables declaration//GEN-END:variables
@@ -363,11 +404,11 @@ public class GestionPedidos extends javax.swing.JPanel {
         tablaPedidos.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                txtIdPedido.setText(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 0).toString());
+                jSpinnerIdPedido.setValue(Integer.parseInt(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 0).toString()));
                 txtNombreTrabajador.setText(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 1).toString());
                 txtNombreCliente.setText(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 2).toString());
                 txtApellidosCliente.setText(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 3).toString());
-                txtEstado.setText(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 4).toString());
+                jComboBoxEstadoPedido.setSelectedItem(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 4).toString());
                 datePickerFechaPedido.setDate(LocalDate.parse(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 5).toString()));
                 timePickerHoraPedido.setTime(LocalTime.parse(tablaPedidos.getValueAt(tablaPedidos.getSelectedRow(), 6).toString()));
                 llenarTablaProductos();
@@ -381,7 +422,7 @@ public class GestionPedidos extends javax.swing.JPanel {
         for (int i = 0; i < numFilas; i++) {
             modeloTablaPedidos.removeRow(0);
         }
-        ArrayList<Pedido> pedidos = Consultas.ListarPedidos();
+        ArrayList<Pedido> pedidos = ConsultasPedidos.listarTodosLosPedidos();
         ArrayList<Usuario> usuarios = Consultas.ListarUsuarios();
         for (Pedido p : pedidos) {
             for (Usuario u : usuarios) {
@@ -392,15 +433,15 @@ public class GestionPedidos extends javax.swing.JPanel {
                     apellidosCliente = u.getApellidos();
                 }
             }
-            String datos[] = {String.valueOf(p.getIdPedido()), nombreTrabajador, nombreCliente, apellidosCliente, p.getEstado(), String.valueOf(p.getFechaHoraPedido().toString().subSequence(0, 10)),String.valueOf(p.getFechaHoraPedido().toString().substring(11,16))};
+            String datos[] = {String.valueOf(p.getIdPedido()), nombreTrabajador, nombreCliente, apellidosCliente, p.getEstadoPedido(), String.valueOf(p.getFechaHoraPedido().toString().subSequence(0, 10)),String.valueOf(p.getFechaHoraPedido().toString().substring(11,16))};
             modeloTablaPedidos.addRow(datos);
         }
     }
 
     private void limpiarTextos() {
-        txtIdPedido.setText("");
+        jSpinnerIdPedido.setValue((int) 0);
         txtNombreTrabajador.setText("");
-        txtEstado.setText("");
+        jComboBoxEstadoPedido.setSelectedIndex(0);
         txtNombreCliente.setText("");
         txtApellidosCliente.setText("");
         datePickerFechaPedido.setDate(LocalDate.now());
@@ -434,6 +475,16 @@ public class GestionPedidos extends javax.swing.JPanel {
         modeloTablaProductos.addColumn("Cantidad");
         modeloTablaProductos.addColumn("Precio Unidad");
         modeloTablaProductos.addColumn("Total Producto");
+    }
+    
+    /**
+     * Metodo que llena el combo box
+     */
+    private void llenarComboBox(){
+        jComboBoxEstadoPedido.addItem("");
+        jComboBoxEstadoPedido.addItem("En preparación");
+        jComboBoxEstadoPedido.addItem("Sin pagar");
+        jComboBoxEstadoPedido.addItem("Pagado");
     }
 
 }

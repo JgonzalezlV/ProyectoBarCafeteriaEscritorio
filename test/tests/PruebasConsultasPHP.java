@@ -9,10 +9,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import controlador.Consultas;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import modelo.Cliente;
 import modelo.Pedido;
+import modelo.Producto;
 import modelo.Reserva;
 import modelo.Trabajador;
 import modelo.Usuario;
@@ -29,28 +31,32 @@ import utilidades.ValidarDatos;
 public class PruebasConsultasPHP {
 
     public static void main(String[] args) {
-        //Funciona
         //logueoUsuario();
-        //Funciona, ya esta insertado el usuario
         //insertarUsuario();
-        //No FUNCIONA!!!!
         //eliminarUsuario();
         //mostrarTodosLosUsuarios();
         /*Usuario user = new Usuario("652000111");
         user = existeUsuario("usuarios", user);
-        System.out.println(user);
-        Cliente c = new Cliente(3);
+        System.out.println(user);*/
+        Cliente c = new Cliente(4);
         c = existeCliente("clientes", c);
-        System.out.println(c);*/
- /*Cliente cliente = existeCliente("clientes", new Cliente(2));
+        System.out.println(c);
+        /*Cliente cliente = existeCliente("clientes", new Cliente(2));
         System.out.println(cliente);*/
- /*Trabajador trabajador = existeTrabajador("trabajadores", new Trabajador(1));
+        /*Trabajador trabajador = existeTrabajador("trabajadores", new Trabajador(1));
         System.out.println(trabajador);*/
- /*System.out.println(ValidarDatos.validarTelefono("5896321478"));
+        /*System.out.println(ValidarDatos.validarTelefono("5896321478"));
         System.out.println(ValidarDatos.validarTelefono("589632147"));
         System.out.println(ValidarDatos.validarTelefono("58967"));*/
         //System.out.println(existePedido("pedidos", new Pedido(2)));
-        System.out.println(reservaYaHecha(new Reserva(1,"2023-03-08 16:30:00")));
+        //System.out.println(reservaYaHecha(new Reserva(1,"2023-03-08 16:30:00")));
+        /*ArrayList<Pedido> pedidos = Consultas.ListarPedidos();
+        for (Pedido pedido : pedidos) {
+            System.out.println(pedido);
+        }*/
+        Producto p = new Producto("Canelones");
+        p = existeProductoNombre(p);
+        System.out.println(p);
     }
 
     public static Reserva reservaYaHecha(Reserva object) {
@@ -114,7 +120,7 @@ public class PruebasConsultasPHP {
     }
 
     private static void insertarUsuario() {
-        Usuario user = new Usuario("cocinero2", "cocinero2", "Cocinero", "", "365892154", "trabajador");
+        Usuario user = new Usuario("cocinero2", "cocinero2", "Cocinero", "", "365892154", "", "trabajador");
         Gson gson = new Gson();
         String jsonObject = gson.toJson(user);
         String values = "tabla=usuarios&datos=" + jsonObject;
@@ -146,4 +152,22 @@ public class PruebasConsultasPHP {
         System.out.println(json.getAsString());
     }
 
+    public static Producto existeProducto(String nombretabla, Producto object) {
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(object);
+        String values = "tabla=" + nombretabla + "&datos=" + jsonObject;
+        String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST, values);
+        Producto producto = Decodificaciones.deserializeProducto(respuesta);
+        return producto;
+    }
+    
+    public static Producto existeProductoNombre(Producto object) {
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(object);
+        String values = "&datos=" + jsonObject;
+        String respuesta = HttpRequest.POST_REQUEST(Constantes.URL_EXIST_PRODUCT, values);
+        Producto producto = Decodificaciones.deserializeProducto(respuesta);
+        return producto;
+    }
+    
 }

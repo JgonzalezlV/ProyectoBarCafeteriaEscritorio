@@ -48,10 +48,10 @@ public class VentanaPrincipalEscritorio extends JFrame implements ActionListener
     private JButton[] botones;
     private final String[] nombreImagenes = {"abrir.jpg", "guardar.png", "salir.png", "informe.png", "web.png"};
     private JToolBar barraHerramientas;
-    private final String[] titulosPanelesAdministrador = {"Gestión Mesas", "Gestión Usuarios", "Gestión Clientes", "Gestión Trabajadores", "Gestión Reservas", "Gestión Productos", "Gestión Pedidos", "Insertar productos a pedidos"};
-    private final String[] titulosPaneles = {"Gestión Pedidos", "Insertar productos a pedidos"};
-    private final int[] mnemotecnicosPestaniasAdministrador = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8};
-    private final int[] mnemotecnicosPestanias = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3};
+    private final String[] titulosPanelesAdministrador = {"Gestión Mesas", "Gestión Usuarios", "Gestión Clientes", "Gestión Trabajadores", "Gestión Reservas", "Gestión Productos", "Gestión Pedidos", "Insertar productos a pedidos","Asignar pedido a mesa"};
+    private final String[] titulosPaneles = {"Gestión Pedidos", "Insertar productos a pedidos","Asignar pedido a mesa"};
+    private final int[] mnemotecnicosPestaniasAdministrador = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9};
+    private final int[] mnemotecnicosPestanias = {KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4};
     private String enlaceWeb = "https://sites.google.com/view/cafeterabar/inicio";
 
     /**
@@ -117,7 +117,7 @@ public class VentanaPrincipalEscritorio extends JFrame implements ActionListener
      *
      * @param telefono --> Es el telefono del usuario logueado.
      */
-    private void iniciarPanelCentral(String telefono) {
+    private void iniciarPanelCentral(String telefono) {      
         // Con el telefono comprobamos si existe el usuario
         Usuario user = Consultas.existeUsuario("usuarios", new Usuario(telefono));
         // Como en este punto existe el usuario guardamos el id
@@ -151,6 +151,8 @@ public class VentanaPrincipalEscritorio extends JFrame implements ActionListener
                         paneles[i].add(new GestionProductos());
                     case "Insertar productos a pedidos" ->
                         paneles[i].add(new GestionProductos_Pedidos());
+                    case "Asignar pedido a mesa" ->
+                        paneles[i].add(new GestionMesas_Pedidos());
                 }
                 // Se introduce los paneles al panel central, se le asignan titulos y mnemotecnicos
                 panelCentral.add(paneles[i]);
@@ -170,8 +172,8 @@ public class VentanaPrincipalEscritorio extends JFrame implements ActionListener
                         paneles[i].add(new GestionPedidos());
                     case "Insertar productos a pedidos" ->
                         paneles[i].add(new GestionProductos_Pedidos());
-                    default -> {
-                    }
+                    case "Asignar pedido a mesa" ->
+                        paneles[i].add(new GestionMesas_Pedidos());   
                 }
                 panelCentral.add(paneles[i]);
                 panelCentral.setTitleAt(i, titulosPaneles[i]);

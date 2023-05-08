@@ -4,6 +4,8 @@
  */
 package ventanas;
 
+import com.google.gson.JsonSyntaxException;
+import controlador.Consultas;
 import controlador.ConsultasProductos;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Producto;
+import utilidades.RespuestaJson;
 import utilidades.SpinnerDecimal;
 
 /**
@@ -18,7 +21,7 @@ import utilidades.SpinnerDecimal;
  * @author Josu
  */
 public class GestionProductos extends javax.swing.JPanel {
-    
+
     private DefaultTableModel modeloTabla = new DefaultTableModel();
 
     /**
@@ -28,8 +31,9 @@ public class GestionProductos extends javax.swing.JPanel {
         initComponents();
         llenarModeloTabla();
         listarProductos();
+        txtNombreProducto.setEnabled(false);
     }
-    
+
     private void llenarModeloTabla() {
         modeloTabla.addColumn("Nombre del producto");
         modeloTabla.addColumn("Precio del producto");
@@ -58,6 +62,7 @@ public class GestionProductos extends javax.swing.JPanel {
         btnInsertarProducto = new javax.swing.JButton();
         btnEliminarProducto = new javax.swing.JButton();
         btnModificarProducto = new javax.swing.JButton();
+        btnNuevoProducto = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNombreProducto = new javax.swing.JTextField();
@@ -106,6 +111,13 @@ public class GestionProductos extends javax.swing.JPanel {
             }
         });
 
+        btnNuevoProducto.setText("Nuevo Producto");
+        btnNuevoProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoProductoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -115,17 +127,20 @@ public class GestionProductos extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnModificarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnInsertarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnInsertarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNuevoProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
+                .addComponent(btnNuevoProducto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnInsertarProducto)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarProducto)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnModificarProducto)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -183,43 +198,68 @@ public class GestionProductos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInsertarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarProductoActionPerformed
-        // TODO add your handling code here:
-        if (ConsultasProductos.existeProducto(txtNombreProducto.getText()) == null) {
-            ConsultasProductos.insertarProductos(txtNombreProducto.getText(),(double) jSpinnerPrecioProducto.getValue());
+        int idProducto = obtenerSiguienteIdProducto();
+        try {
+            Consultas.existeProductoNombre(new Producto(txtNombreProducto.getText()));
+            JOptionPane.showMessageDialog(null, "Producto ya registrado");
+        } catch (JsonSyntaxException e) {
+            Consultas.insertar("productos", new Producto(idProducto, txtNombreProducto.getText(), (double) jSpinnerPrecioProducto.getValue()));
             listarProductos();
             limpiarTextos();
-        }else{
-            JOptionPane.showMessageDialog(null, "Producto ya registrado");
         }
     }//GEN-LAST:event_btnInsertarProductoActionPerformed
 
+    private int obtenerSiguienteIdProducto() {
+        ArrayList<Producto> productos = Consultas.ListarProductos();
+        int idProducto = 0;
+        for (Producto p : productos) {
+            idProducto = p.getIdProducto();
+        }
+        idProducto++;
+        return idProducto;
+    }
+
     private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
-        // TODO add your handling code here:
-        if (ConsultasProductos.existeProducto(txtNombreProducto.getText()) != null) {
-            ConsultasProductos.eliminarProducto(txtNombreProducto.getText());
-            listarProductos();
-            limpiarTextos();
-        }else{
-            JOptionPane.showMessageDialog(null, "Producto no registrado");
+        try {
+            Producto p = Consultas.existeProductoNombre(new Producto(txtNombreProducto.getText()));
+            int eleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro de que quieres eliminar el producto?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (eleccion == JOptionPane.YES_OPTION) {
+                RespuestaJson respuestaJson = Consultas.eliminar("productos", new Producto(p.getIdProducto()));
+                JOptionPane.showMessageDialog(this, respuestaJson.getValue(), "Información", JOptionPane.INFORMATION_MESSAGE);
+                listarProductos();
+                limpiarTextos();
+            }
+        } catch (JsonSyntaxException e) {
+            JOptionPane.showMessageDialog(null, "Producto no registrado", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarProductoActionPerformed
 
     private void btnModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProductoActionPerformed
-        // TODO add your handling code here:
-        if (ConsultasProductos.existeProducto(txtNombreProducto.getText()) != null) {
-            ConsultasProductos.modificarProducto(txtNombreProducto.getText(), (double) jSpinnerPrecioProducto.getValue());
-            listarProductos();
-            limpiarTextos();
-        }else{
-            JOptionPane.showMessageDialog(null, "Producto no registrado");
+        try {
+            Producto p = Consultas.existeProductoNombre(new Producto(txtNombreProducto.getText()));
+            int eleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro de que quieres modificar el producto?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (eleccion == JOptionPane.YES_OPTION) {
+                RespuestaJson respuestaJson = Consultas.actualizar("productos", new Producto(p.getIdProducto(), txtNombreProducto.getText(), (double) jSpinnerPrecioProducto.getValue()));
+                JOptionPane.showMessageDialog(this, respuestaJson.getValue(), "Información", JOptionPane.INFORMATION_MESSAGE);
+                listarProductos();
+                limpiarTextos();
+            }
+        } catch (JsonSyntaxException e) {
+            JOptionPane.showMessageDialog(null, "Producto no registrado", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarProductoActionPerformed
+
+    private void btnNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProductoActionPerformed
+        txtNombreProducto.setEnabled(true);
+        txtNombreProducto.requestFocus();
+    }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminarProducto;
     private javax.swing.JButton btnInsertarProducto;
     private javax.swing.JButton btnModificarProducto;
+    private javax.swing.JButton btnNuevoProducto;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
@@ -237,11 +277,11 @@ public class GestionProductos extends javax.swing.JPanel {
         }
         ArrayList<Producto> productos = ConsultasProductos.listarTodosLosProductos();
         for (Producto p : productos) {
-            String datos[] = {p.getNombreProducto(),String.valueOf(p.getPrecioProducto())};
+            String datos[] = {p.getNombreProducto(), String.valueOf(p.getPrecioProducto())};
             modeloTabla.addRow(datos);
         }
     }
-    
+
     private void limpiarTextos() {
         txtNombreProducto.setText("");
         jSpinnerPrecioProducto.setValue((double) 0.0);

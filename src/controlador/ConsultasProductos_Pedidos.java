@@ -52,9 +52,10 @@ public class ConsultasProductos_Pedidos {
         return listaProductos_Pedidos;
     }
     
-    public static void insertarProductos_Pedidos(int idPP, int idPedido, int idProducto, int cantidadProducto) {
+    public static boolean insertarProductos_Pedidos(int idPP, int idPedido, int idProducto, int cantidadProducto) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
+        boolean insertado = false;
         try {
             String sql = "INSERT INTO `productos_pedidos` VALUES (?,?,?,?)";
             conexionBD = new ConexionDB();
@@ -66,6 +67,7 @@ public class ConsultasProductos_Pedidos {
                 sentencia.setInt(3, idProducto);
                 sentencia.setInt(4, cantidadProducto);
                 sentencia.executeUpdate();
+                insertado = true;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasProductos_Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -79,11 +81,13 @@ public class ConsultasProductos_Pedidos {
                 Logger.getLogger(ConsultasProductos_Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return insertado;
     }
     
-    public static void eliminarProducto_Pedidos(int idPP) {
+    public static boolean eliminarProducto_Pedidos(int idPP) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
+        boolean eliminado = false;
         try {
             String sql = "DELETE FROM productos_pedidos WHERE idPP=?";
             conexionBD = new ConexionDB();
@@ -92,6 +96,7 @@ public class ConsultasProductos_Pedidos {
                 sentencia = conexion.prepareStatement(sql);
                 sentencia.setInt(1, idPP);
                 sentencia.executeUpdate();
+                eliminado = true;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasProductos_Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -105,11 +110,13 @@ public class ConsultasProductos_Pedidos {
                 Logger.getLogger(ConsultasProductos_Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return eliminado;
     }
     
-    public static void modificarProducto_Pedidos(int idPP, int idPedido, int idProducto, int cantidadProducto) {
+    public static boolean modificarProducto_Pedidos(int idPP, int idPedido, int idProducto, int cantidadProducto) {
         PreparedStatement sentencia = null;
         ConexionDB conexionBD = null;
+        boolean modificado = false;
         try {
             String sql = "UPDATE  productos_pedidos SET idPedido=?,idProducto=?,cantidadProducto=?  WHERE idPP=?";
             conexionBD = new ConexionDB();
@@ -121,6 +128,7 @@ public class ConsultasProductos_Pedidos {
                 sentencia.setInt(3, cantidadProducto);
                 sentencia.setInt(4, idPP);
                 sentencia.executeUpdate();
+                modificado = true;
             } catch (SQLException ex) {
                 Logger.getLogger(ConsultasProductos_Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -134,6 +142,7 @@ public class ConsultasProductos_Pedidos {
                 Logger.getLogger(ConsultasProductos_Pedidos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return  modificado;
     }
     
     public static Productos_Pedidos existeProducto(int idPP) {

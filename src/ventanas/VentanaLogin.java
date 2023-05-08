@@ -6,9 +6,6 @@ package ventanas;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -28,7 +25,6 @@ import modelo.Usuario;
 import utilidades.Constantes;
 import utilidades.Decodificaciones;
 import utilidades.HttpRequest;
-import ventanas.VentanaPrincipalEscritorio;
 
 /**
  *  Ventana que permite loguearse a la aplicacion
@@ -326,6 +322,9 @@ public class VentanaLogin extends javax.swing.JFrame {
             } else {
                 // Si no se muestra el siguiente mensaje
                 JOptionPane.showMessageDialog(null, "No tienes permisos");
+                txtUsuario.setText("");
+                txtPassword.setText("");
+                txtUsuario.requestFocus();
             }
         } catch (JsonSyntaxException e) {
             // Esto saltaria cuando en la bd no exista el usuario ni la password
